@@ -13,7 +13,7 @@
       --text: #1c1b1a;
       --muted: #5c5956;
       --line: rgba(28,27,26,.12);
-      --shadow: 0 12px 30px rgba(28,27,26,.10);
+      --shadow: 0 14px 34px rgba(28,27,26,.10);
       --shadow2: 0 2px 10px rgba(28,27,26,.08);
 
       --gold: #e7daab;
@@ -46,7 +46,7 @@
 
     .wrap{
       min-height: 100%;
-      padding: 14px 12px 18px;
+      padding: 12px 12px 16px;
       display: grid;
       place-items: start center;
     }
@@ -86,12 +86,11 @@
       overflow: hidden;
       flex: 0 0 auto;
     }
-
     .logoMark img{
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      display:block;
     }
 
     .restart{
@@ -116,6 +115,9 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       position: relative;
+
+      /* FIX: genug Höhe, damit letzte Screens NICHT „leer oben“ wirken */
+      min-height: calc(100svh - 74px);
     }
 
     .wm{
@@ -128,7 +130,7 @@
       filter: saturate(1.05);
     }
 
-    /* TOPBAR (Progress) */
+    /* TOPBAR */
     .topbar{
       display:flex;
       align-items:center;
@@ -161,27 +163,36 @@
       padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid rgba(28,27,26,.10);
-      background: rgba(251,250,247,.75);
+      background: rgba(251,250,247,.80);
     }
 
     .inner{
-      padding: 18px 16px 22px;
+      padding: 18px 16px 18px;
       position: relative;
       z-index: 1;
-      min-height: 56svh; /* hilft gegen „leer & lang“ auf Mobil */
+
+      /* FIX: Kein Scroll/kein „Leerraum oben“ auf Lead/DOI/Result */
+      min-height: calc(100svh - 150px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
+
     @media (min-width: 720px){
-      .inner{ padding: 24px 22px 26px; min-height: 54svh; }
+      .inner{ padding: 24px 22px 22px; min-height: calc(100svh - 160px); }
       .topbar{ padding-left: 22px; padding-right: 22px; }
     }
 
-    /* TITLES */
+    /* TITLES: IMMER BORDEAUX */
+    h1, h2, .result-title, .qtitle{
+      color: var(--bordeaux);
+    }
+
     h1{
       margin: 0 0 14px;
       font-size: 28px;
       letter-spacing: -0.02em;
       line-height: 1.12;
-      color: var(--bordeaux); /* Wunsch: Titel in Bordeaux */
     }
     @media (min-width: 720px){ h1{ font-size: 36px; } }
 
@@ -193,9 +204,7 @@
       line-height: 1.6;
     }
 
-    /* IMPORTANT FIX:
-       Panels waren vorher nur transparent -> haben Platz belegt -> du musstest scrollen.
-       Jetzt: nicht aktive Panels sind wirklich weg (display:none). */
+    /* PANELS: Fix gegen Scroll/Leerräume -> nur active ist im Layout */
     .panel{ display:none; }
     .panel.active{
       display:block;
@@ -206,9 +215,9 @@
       to{ opacity:1; transform: translateY(0); }
     }
 
-    /* Quiz Question Block */
+    /* Quiz */
     .qmeta{
-      margin-top: 6px;
+      margin-top: 2px;
       margin-bottom: 14px;
       display:flex;
       align-items:center;
@@ -217,9 +226,9 @@
     }
     .qmeta .tag{
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: .02em;
-      color: rgba(118,9,75,.95);
+      color: rgba(118,9,75,.98);
       background: rgba(118,9,75,.06);
       border: 1px solid rgba(118,9,75,.14);
       padding: 7px 10px;
@@ -246,7 +255,7 @@
       padding: 14px 14px;
       border-radius: var(--radius2);
       border: 1px solid rgba(28,27,26,.12);
-      background: rgba(251,250,247,.70);
+      background: rgba(251,250,247,.76);
       cursor: pointer;
       transition: transform .12s var(--ease), border-color .12s var(--ease), background .12s var(--ease);
       user-select: none;
@@ -257,7 +266,7 @@
     .opt:hover{
       transform: translateY(-1px);
       border-color: rgba(118,9,75,.22);
-      background: rgba(231,218,171,.14);
+      background: rgba(231,218,171,.16);
     }
 
     .badge{
@@ -270,8 +279,9 @@
       border: 1px solid rgba(231,218,171,.75);
       margin-top: 1px;
       flex: 0 0 auto;
+      color: var(--text);
     }
-    .opt .txt{ flex: 1; font-size: 15px; }
+    .opt .txt{ flex: 1; font-size: 15px; color: var(--text); }
 
     .nav{
       display:flex;
@@ -288,7 +298,7 @@
       color: var(--text);
       border-radius: 999px;
       padding: 12px 16px;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 14px;
       cursor: pointer;
       box-shadow: var(--shadow2);
@@ -319,38 +329,7 @@
 
     .hint{ font-size: 13px; color: var(--muted); margin: 10px 0 0; }
 
-    .form{ display:grid; gap: 12px; margin-top: 10px; }
-    label{ display:grid; gap: 6px; font-size: 13px; color: var(--muted); }
-
-    input[type="text"], input[type="email"]{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(28,27,26,.14);
-      background: #fff;
-      font-size: 15px;
-      outline: none;
-      transition: box-shadow .14s var(--ease), border-color .14s var(--ease);
-      min-height: 44px;
-    }
-    input[type="text"]:focus, input[type="email"]:focus{
-      border-color: rgba(118,9,75,.35);
-      box-shadow: 0 0 0 4px var(--focus);
-    }
-
-    .check{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      padding: 12px 12px;
-      border: 1px solid rgba(28,27,26,.12);
-      border-radius: 12px;
-      background: rgba(251,250,247,.70);
-    }
-    .check input{ margin-top: 3px; width: 18px; height: 18px; accent-color: var(--bordeaux); }
-
-    .error{ color: var(--danger); font-size: 13px; margin-top: -2px; }
-
+    /* Result boxes */
     .pill{
       display:inline-flex;
       align-items:center;
@@ -362,9 +341,15 @@
       background: rgba(231,218,171,.22);
       border: 1px solid rgba(231,218,171,.60);
       width: fit-content;
+      color: var(--text);
     }
 
-    .result-title{ margin: 10px 0 10px; font-size: 24px; letter-spacing: -0.02em; line-height: 1.15; }
+    .result-title{
+      margin: 10px 0 10px;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
     @media (min-width: 720px){ .result-title{ font-size: 30px; } }
 
     .grid{ display:grid; gap: 12px; margin-top: 12px; }
@@ -372,12 +357,12 @@
 
     .box{
       border: 1px solid rgba(28,27,26,.10);
-      background: rgba(251,250,247,.64);
+      background: rgba(251,250,247,.72);
       border-radius: 16px;
       padding: 14px 14px;
     }
-    .box h3{ margin: 0 0 8px; font-size: 14px; }
-    .box p, .box ul{ margin: 0; font-size: 14px; line-height: 1.55; }
+    .box h3{ margin: 0 0 8px; font-size: 14px; color: var(--text); }
+    .box p, .box ul{ margin: 0; font-size: 14px; line-height: 1.55; color: var(--text); }
     .box ul{ padding-left: 18px; }
     .box li{ margin: 6px 0; }
 
@@ -395,7 +380,7 @@
       <header>
         <div class="brandline" aria-label="Quiz">
           <span class="logoMark" title="Phoenix" aria-hidden="true">
-            <!-- Wenn dein Logo anders heißt, hier anpassen -->
+            <!-- Logo-Datei in GitHub: phoenix-logo.png -->
             <img src="phoenix-logo.png" alt="" />
           </span>
           <span>Quiz: Standort im Leben</span>
@@ -429,7 +414,7 @@
             <h1>Wo stehst du wirklich im Leben?</h1>
             <p class="sub">Finde heraus, welche innere Version gerade führt – und was dein nächster stabiler Schritt ist.</p>
             <button class="btn btn-primary" id="startBtn" type="button">Quiz starten</button>
-            <p class="hint">Dauer: ca. 3–4 Minuten. Ergebnis nach E-Mail-Bestätigung.</p>
+            <p class="hint">Dauer: ca. 3–4 Minuten. Auswertung nach E-Mail-Bestätigung.</p>
           </section>
 
           <!-- QUIZ -->
@@ -450,55 +435,35 @@
             <p class="hint">Wähle die Antwort, die im Alltag am häufigsten zutrifft.</p>
           </section>
 
-          <!-- LEAD -->
+          <!-- LEAD / REDIRECT -->
           <section class="panel" id="panelLead">
             <h1>Jetzt Auswertung erhalten</h1>
             <p class="sub">
-              Trag deinen Namen und deine E-Mail ein. Danach kommt eine Bestätigungs-Mail. Nach dem Klick öffnet sich deine Auswertung.
-            </p>
-
-            <form class="form" id="leadForm" novalidate>
-              <label for="firstName">Vorname</label>
-              <input id="firstName" type="text" placeholder="z.B. Simone" autocomplete="given-name" required />
-              <span class="error" id="errName" style="display:none;">Bitte gib deinen Vornamen ein.</span>
-
-              <label for="email">E-Mail</label>
-              <input id="email" type="email" placeholder="z.B. name@mail.de" autocomplete="email" required />
-              <span class="error" id="errEmail" style="display:none;">Bitte gib eine gültige E-Mail ein.</span>
-
-              <div class="check">
-                <input id="consent" type="checkbox" required />
-                <div><strong>Ich möchte mein Ergebnis erhalten und Impulse zur Standortbestimmung bekommen.</strong></div>
-              </div>
-              <span class="error" id="errConsent" style="display:none;">Bitte setze das Häkchen.</span>
-
-              <button class="btn btn-primary" type="submit">Jetzt Auswertung erhalten</button>
-            </form>
-
-            <p class="hint">
-              Tipp: Posteingang prüfen. Bei fehlender Mail nach 2 Minuten: Spam-Ordner prüfen und als sicher markieren.
-            </p>
-
-            <p class="tiny">
-              Hinweis: Diese Seite speichert Leads nicht auf GitHub. Die Übertragung läuft über dein Newsletter-System (Quentn).
-            </p>
-          </section>
-
-          <!-- DOI -->
-          <section class="panel" id="panelDoi">
-            <span class="pill">Bestätigung</span>
-            <h2 class="result-title" style="margin-top:12px;">Bestätigungsmail öffnen</h2>
-            <p class="sub">
-              Gleich kommt eine E-Mail mit einem Bestätigungslink. Nach dem Klick öffnet sich automatisch deine Auswertung.
+              Als nächstes bestätigst du deine E-Mail-Adresse. Danach öffnet sich automatisch deine Auswertung.
             </p>
 
             <div class="box">
-              <h3>Damit es sofort klappt</h3>
+              <h3>So läuft es ab</h3>
               <ul>
-                <li>Spam-Ordner prüfen und als sicher markieren</li>
-                <li>Nach 2 Minuten erneut prüfen</li>
+                <li>Du wirst zur Bestätigungsseite weitergeleitet</li>
+                <li>Du trägst deine E-Mail ein</li>
+                <li>Du klickst den Bestätigungslink in der Mail</li>
+                <li>Deine Auswertung öffnet sich automatisch</li>
               </ul>
             </div>
+
+            <div class="ctaRow">
+              <button class="btn btn-primary" id="goQuentnBtn" type="button">Jetzt Auswertung erhalten</button>
+              <button class="btn btn-small" id="skipBtn" type="button">Später</button>
+            </div>
+
+            <p class="hint">
+              Tipp: Posteingang prüfen. Wenn du keine Mail siehst, prüfe den Spam-Ordner.
+            </p>
+
+            <p class="tiny">
+              Technisch: Du wirst zu Quentn weitergeleitet. Dort läuft Double Opt-in und die Zustellung der Auswertung.
+            </p>
           </section>
 
           <!-- RESULT -->
@@ -525,7 +490,7 @@
             </div>
 
             <div class="ctaRow">
-              <!-- CTA LINKS: HIER ERSETZEN -->
+              <!-- LINKS HIER ERSETZEN -->
               <a class="btn btn-primary" id="ctaStandort" href="https://DEIN-LINK" target="_blank" rel="noopener">Standortbestimmung vertiefen</a>
               <a class="btn btn-small" id="ctaWebinar" href="https://DEIN-LINK" target="_blank" rel="noopener">Selbstsabotage lösen mit der AUV-Regel (77 €)</a>
             </div>
@@ -552,26 +517,11 @@
       webinar77: "https://DEIN-LINK"
     };
 
-    /* =========================================================
-       QUENTN ANBINDUNG (empfohlen): 5 Formulare, je Profil eins
-       -> Pro Formular: eigenes DOI + eigene Sequenz
-       -> Nach DOI Weiterleitung auf diese Seite mit ?r=profilKey
-       ========================================================= */
-    const QUENTN_FORM_ACTION = {
-      funktionierende: "https://DEIN-QUENTN-FORM-ACTION-URL",
-      suchende: "https://DEIN-QUENTN-FORM-ACTION-URL",
-      kontrollierende: "https://DEIN-QUENTN-FORM-ACTION-URL",
-      erschoepfte: "https://DEIN-QUENTN-FORM-ACTION-URL",
-      reife: "https://DEIN-QUENTN-FORM-ACTION-URL"
-    };
-
-    // Feldnamen aus Quentn-Formular-Snippet übernehmen:
-    const QUENTN_FIELDS = {
-      firstName: "first_name",
-      email: "email",
-      consent: "consent",
-      resultProfile: "result_profile" // WICHTIG: Dieses Feld in Quentn als Custom Field anlegen
-    };
+    /* ===========================
+       QUENTN LANDINGPAGE (Formular-Seite)
+       -> Wichtig: Das ist deine Quentn-Seite mit dem Formular-Widget
+       =========================== */
+    const QUENTN_LANDINGPAGE = "https://namaskar-institut.eu-4.quentn-site.com/quizerfuellung";
 
     /* ===========================
        PROFILE / PRIORITÄT
@@ -673,7 +623,6 @@
 
     /* ===========================
        QUIZ-FRAGEN (10, A–E)
-       Jede Frage verteilt alle 5 Profile
        =========================== */
     const QUESTIONS = [
       {
@@ -789,7 +738,6 @@
     const panelStart = document.getElementById("panelStart");
     const panelQuiz = document.getElementById("panelQuiz");
     const panelLead = document.getElementById("panelLead");
-    const panelDoi = document.getElementById("panelDoi");
     const panelResult = document.getElementById("panelResult");
 
     const startBtn = document.getElementById("startBtn");
@@ -800,13 +748,8 @@
     const backBtn = document.getElementById("backBtn");
     const nextBtn = document.getElementById("nextBtn");
 
-    const leadForm = document.getElementById("leadForm");
-    const firstNameEl = document.getElementById("firstName");
-    const emailEl = document.getElementById("email");
-    const consentEl = document.getElementById("consent");
-    const errName = document.getElementById("errName");
-    const errEmail = document.getElementById("errEmail");
-    const errConsent = document.getElementById("errConsent");
+    const goQuentnBtn = document.getElementById("goQuentnBtn");
+    const skipBtn = document.getElementById("skipBtn");
 
     const resultTitle = document.getElementById("resultTitle");
     const resultShort = document.getElementById("resultShort");
@@ -830,7 +773,8 @@
     const state = {
       qIndex: 0,
       answers: Array(QUESTIONS.length).fill(null),
-      scores: { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 }
+      scores: { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 },
+      computedProfile: null
     };
 
     /* ===========================
@@ -843,11 +787,10 @@
     }
 
     function showPanel(which){
-      [panelStart, panelQuiz, panelLead, panelDoi, panelResult].forEach(p => p.classList.remove("active"));
+      [panelStart, panelQuiz, panelLead, panelResult].forEach(p => p.classList.remove("active"));
       if(which==="start") panelStart.classList.add("active");
       if(which==="quiz") panelQuiz.classList.add("active");
       if(which==="lead") panelLead.classList.add("active");
-      if(which==="doi") panelDoi.classList.add("active");
       if(which==="result") panelResult.classList.add("active");
 
       topbar.style.display = (which==="quiz") ? "flex" : "none";
@@ -881,11 +824,6 @@
       return tied[0] || "funktionierende";
     }
 
-    function validEmail(email){
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
-    }
-    function setError(el, show){ el.style.display = show ? "block" : "none"; }
-
     function renderQuestion(){
       const q = QUESTIONS[state.qIndex];
       questionText.textContent = q.text;
@@ -916,51 +854,31 @@
 
       if(state.qIndex === QUESTIONS.length - 1){
         track("quiz_completed", { total_questions: QUESTIONS.length });
+        state.computedProfile = determineProfile();
+
+        // lokal speichern (für Support/Debug)
+        try{
+          localStorage.setItem("phoenixQuizComputed", JSON.stringify({
+            profileKey: state.computedProfile,
+            ts: Date.now()
+          }));
+        }catch(e){}
+
         showPanel("lead");
         return;
       }
+
       state.qIndex++;
       renderQuestion();
     }
 
-    /* =========================================
-       QUENTN SUBMIT (Form POST)
-       -> Wichtig: Wir senden auch result_profile mit,
-          damit Quentn nach DOI richtig zurückleiten kann.
-       ========================================= */
-    function submitToQuentn(profileKey, firstName, email, consent){
-      const action = QUENTN_FORM_ACTION[profileKey];
-      if(!action || action.includes("DEIN-QUENTN-FORM-ACTION-URL")){
-        alert("Quentn Action URL fehlt. Bitte QUENTN_FORM_ACTION im Code befüllen.");
-        return;
-      }
-
-      const f = document.createElement("form");
-      f.method = "POST";
-      f.action = action;
-
-      const add = (name, value) => {
-        const i = document.createElement("input");
-        i.type = "hidden";
-        i.name = name;
-        i.value = value;
-        f.appendChild(i);
-      };
-
-      add(QUENTN_FIELDS.firstName, firstName);
-      add(QUENTN_FIELDS.email, email);
-      add(QUENTN_FIELDS.consent, consent ? "1" : "0");
-
-      // Wichtiges Feld für DOI-Redirect:
-      add(QUENTN_FIELDS.resultProfile, profileKey);
-
-      document.body.appendChild(f);
-      f.submit();
+    function redirectToQuentn(profileKey){
+      // Übergabe an Quentn: Feld muss dort "Vorausfüllen" + "Immer verstecken" haben
+      const url = `${QUENTN_LANDINGPAGE}?field_quiz_ergebnisprofil=${encodeURIComponent(profileKey)}`;
+      track("lead_form_redirect", { result_profile_key: profileKey });
+      window.location.href = url;
     }
 
-    /* ===========================
-       RESULT RENDER
-       =========================== */
     function renderResult(profileKey){
       const copy = RESULT_COPY[profileKey];
       if(!copy) return;
@@ -992,28 +910,19 @@
       scrollTopHard();
     }
 
-    /* ===========================
-       RESET
-       =========================== */
     function resetAll({ clearStorage=false } = {}){
       state.qIndex = 0;
       state.answers = Array(QUESTIONS.length).fill(null);
       state.scores = { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 };
-
-      firstNameEl.value = "";
-      emailEl.value = "";
-      consentEl.checked = false;
-      setError(errName,false); setError(errEmail,false); setError(errConsent,false);
+      state.computedProfile = null;
 
       progressBar.style.width = "0%";
 
       if(clearStorage){
         try{
           localStorage.removeItem("phoenixQuizComputed");
-          localStorage.removeItem("phoenixQuizLast");
         }catch(e){}
       }
-
       showPanel("start");
     }
 
@@ -1039,7 +948,18 @@
         alert("Bitte wähle eine Antwort.");
         return;
       }
-      // Auswahl führt bereits weiter – „Weiter“ ist für Bediengefühl.
+      // Navigation-Button bleibt fürs Gefühl; Antwort klickt weiter
+    });
+
+    goQuentnBtn.addEventListener("click", () => {
+      const profileKey = state.computedProfile || determineProfile() || "funktionierende";
+      track("lead_submitted", { result_profile_key: profileKey }); // Tracking-Hook
+      redirectToQuentn(profileKey);
+    });
+
+    skipBtn.addEventListener("click", () => {
+      // zurück zum Start (ohne Drama)
+      showPanel("start");
     });
 
     restartBtn.addEventListener("click", () => {
@@ -1047,42 +967,10 @@
       resetAll({ clearStorage: clear });
     });
 
-    leadForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const firstName = String(firstNameEl.value||"").trim();
-      const email = String(emailEl.value||"").trim();
-      const consent = !!consentEl.checked;
-
-      const okName = firstName.length >= 2;
-      const okEmail = validEmail(email);
-      const okConsent = consent;
-
-      setError(errName, !okName);
-      setError(errEmail, !okEmail);
-      setError(errConsent, !okConsent);
-      if(!okName || !okEmail || !okConsent) return;
-
-      const profileKey = determineProfile();
-
-      // Lokal speichern (Debug/Support)
-      const payload = { profileKey, ts: Date.now() };
-      try{
-        localStorage.setItem("phoenixQuizComputed", JSON.stringify(payload));
-        localStorage.setItem("phoenixQuizLast", String(Date.now()));
-      }catch(e){}
-
-      track("lead_submitted", { result_profile_key: profileKey });
-
-      // DOI Screen
-      showPanel("doi");
-
-      // Quentn POST (mit result_profile!)
-      submitToQuentn(profileKey, firstName, email, consent);
-    });
-
     /* ===========================
        INIT: Ergebnis nach DOI via ?r=...
+       Quentn Redirect soll sein:
+       https://namaskaracademy.github.io/Phoenix-Quiz/?r=[field_quiz_ergebnisprofil]
        =========================== */
     (function init(){
       const p = new URLSearchParams(location.search);
