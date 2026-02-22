@@ -1,1 +1,929 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Wo stehst du wirklich im Leben? – Quiz</title>
+
+  <style>
+    :root{
+      --bg: #fbfaf7;
+      --card: #ffffff;
+      --text: #1c1b1a;
+      --muted: #5c5956;
+      --line: rgba(28,27,26,.12);
+      --shadow: 0 10px 30px rgba(28,27,26,.10);
+      --shadow2: 0 2px 10px rgba(28,27,26,.08);
+
+      --gold: #e7daab;
+      --bordeaux: #76094b;
+
+      --radius: 18px;
+      --radius2: 14px;
+
+      --focus: rgba(118, 9, 75, .22);
+      --danger: #b42318;
+
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(231,218,171,.28), transparent 60%),
+        radial-gradient(900px 520px at 90% 10%, rgba(118,9,75,.08), transparent 55%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.35;
+    }
+
+    .wrap{
+      min-height: 100%;
+      padding: 24px 14px 32px;
+      display: grid;
+      place-items: center;
+    }
+
+    .app{
+      width: min(920px, 100%);
+      display: grid;
+      gap: 14px;
+    }
+
+    header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 6px;
+      gap: 10px;
+    }
+
+    .brandline{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size: 13px;
+      min-width: 0;
+    }
+
+    .phoenixMark{
+      width: 26px;
+      height: 26px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(118,9,75,.18);
+      box-shadow: var(--shadow2);
+    }
+    .phoenixMark svg{ display:block; }
+
+    .restart{
+      font-size: 13px;
+      color: var(--bordeaux);
+      opacity: .9;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(118,9,75,.18);
+      background: rgba(255,255,255,.55);
+      box-shadow: var(--shadow2);
+      transition: transform .15s var(--ease), background .15s var(--ease);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .restart:hover{ transform: translateY(-1px); background: rgba(255,255,255,.8); }
+    .restart:active{ transform: translateY(0); }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phoenixWatermark{
+      position: absolute;
+      inset: -40px -60px auto auto;
+      width: min(520px, 72vw);
+      height: auto;
+      opacity: .08;
+      pointer-events: none;
+      transform: rotate(6deg);
+    }
+
+    .card-inner{
+      padding: 22px 18px;
+      position: relative;
+      z-index: 1;
+    }
+    @media (min-width: 720px){
+      .card-inner{ padding: 28px 28px; }
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap: 14px;
+      padding: 14px 18px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .progress{
+      flex:1;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(28,27,26,.08);
+      overflow: hidden;
+      position: relative;
+    }
+    .progress > span{
+      display:block;
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), rgba(231,218,171,.65), rgba(118,9,75,.55));
+      transition: width .35s var(--ease);
+    }
+
+    .qcount{
+      white-space: nowrap;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    h1{
+      margin: 6px 0 8px;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+    }
+    @media (min-width: 720px){
+      h1{ font-size: 34px; }
+    }
+    .sub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 68ch;
+    }
+
+    .divider{
+      height: 1px;
+      background: var(--line);
+      margin: 14px -18px 0;
+    }
+    @media (min-width: 720px){
+      .divider{ margin-left: -28px; margin-right: -28px; }
+    }
+
+    .view{ position: relative; overflow: hidden; }
+
+    .panel{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .28s var(--ease), transform .28s var(--ease);
+      pointer-events: none;
+    }
+    .panel.active{
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .question-title{
+      font-size: 18px;
+      margin: 0 0 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .options{
+      display:grid;
+      gap: 10px;
+      margin: 12px 0 18px;
+    }
+
+    .opt{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      padding: 14px 14px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(28,27,26,.12);
+      background: rgba(251,250,247,.6);
+      cursor: pointer;
+      transition: transform .12s var(--ease), border-color .12s var(--ease), background .12s var(--ease);
+      user-select: none;
+      min-height: 56px;
+    }
+    .opt:hover{
+      transform: translateY(-1px);
+      border-color: rgba(118,9,75,.22);
+      background: rgba(231,218,171,.14);
+    }
+
+    .badge{
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display:grid;
+      place-items:center;
+      font-weight: 700;
+      font-size: 13px;
+      background: rgba(231,218,171,.35);
+      border: 1px solid rgba(231,218,171,.75);
+      margin-top: 1px;
+    }
+    .opt .txt{ flex: 1; font-size: 15px; }
+
+    .nav{
+      display:flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items:center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      border: 1px solid rgba(28,27,26,.14);
+      background: #fff;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 650;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .14s var(--ease), border-color .14s var(--ease);
+      min-height: 44px;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(118,9,75,.22); }
+
+    .btn-primary{
+      background: linear-gradient(180deg, rgba(118,9,75,.92), rgba(118,9,75,1));
+      color: #fff;
+      border-color: rgba(118,9,75,.4);
+    }
+    .btn-secondary{
+      background: rgba(231,218,171,.22);
+      border-color: rgba(231,218,171,.65);
+    }
+    .btn-small{
+      padding: 10px 14px;
+      font-size: 13px;
+      box-shadow: none;
+    }
+
+    .hint{ font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+
+    .form{ display:grid; gap: 12px; margin-top: 10px; }
+
+    label{ display:grid; gap: 6px; font-size: 13px; color: var(--muted); }
+
+    input[type="text"], input[type="email"]{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(28,27,26,.14);
+      background: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: box-shadow .14s var(--ease), border-color .14s var(--ease);
+      min-height: 44px;
+    }
+    input[type="text"]:focus, input[type="email"]:focus{
+      border-color: rgba(118,9,75,.35);
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+
+    .check{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 12px 12px;
+      border: 1px solid rgba(28,27,26,.12);
+      border-radius: 12px;
+      background: rgba(251,250,247,.6);
+    }
+    .check input{ margin-top: 3px; width: 18px; height: 18px; accent-color: var(--bordeaux); }
+
+    .error{ color: var(--danger); font-size: 13px; margin-top: -2px; }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(231,218,171,.22);
+      border: 1px solid rgba(231,218,171,.60);
+      width: fit-content;
+    }
+
+    .result-title{ margin: 0; font-size: 22px; letter-spacing: -0.02em; line-height: 1.15; }
+    @media (min-width: 720px){ .result-title{ font-size: 28px; } }
+
+    .result-grid{ display:grid; gap: 12px; margin-top: 14px; }
+    @media (min-width: 820px){ .result-grid{ grid-template-columns: 1fr 1fr; gap: 14px; } }
+
+    .box{
+      border: 1px solid rgba(28,27,26,.10);
+      background: rgba(251,250,247,.55);
+      border-radius: 16px;
+      padding: 14px 14px;
+    }
+    .box h3{ margin: 0 0 8px; font-size: 14px; }
+    .box p, .box ul{ margin: 0; font-size: 14px; line-height: 1.5; }
+    .box ul{ padding-left: 18px; }
+    .box li{ margin: 6px 0; }
+
+    .ctaRow{ display:flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+    @media (min-width: 720px){ .ctaRow{ flex-direction: row; align-items:center; } }
+
+    .footer-note{ margin-top: 14px; color: var(--muted); font-size: 12px; }
+
+    .sr-only{
+      position:absolute !important;
+      width:1px; height:1px;
+      padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0);
+      white-space:nowrap; border:0;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="app">
+      <header>
+        <div class="brandline">
+          <span class="phoenixMark" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="pho-grad" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0" stop-color="var(--gold)"></stop>
+                  <stop offset="1" stop-color="var(--bordeaux)"></stop>
+                </linearGradient>
+              </defs>
+              <path d="M12 2c1.7 2.6 2.2 4.8 1.6 6.7 2.3-1.2 4.1-2.9 5.4-5.1.5 4.2-1 7.5-4.6 10
+                       1.1.2 2.1.2 3.1 0-.8 2.7-2.8 4.7-6 6.2-3.2-1.5-5.2-3.5-6-6.2 1 .2 2 .2 3.1 0
+                       C7.6 11 6.1 7.7 6.6 3.5c1.3 2.2 3.1 3.9 5.4 5.1C11.8 6.7 11.9 4.5 12 2z"
+                    fill="url(#pho-grad)" opacity=".95"/>
+            </svg>
+          </span>
+          <span>Quiz</span>
+        </div>
+        <button class="restart" id="restartBtn" type="button">Neu starten</button>
+      </header>
+
+      <main class="card">
+        <svg class="phoenixWatermark" viewBox="0 0 900 700" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="wm-grad" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="var(--gold)"></stop>
+              <stop offset="1" stop-color="var(--bordeaux)"></stop>
+            </linearGradient>
+          </defs>
+          <path d="M450 60c55 95 70 175 46 244 85-42 165-110 240-205 18 165-58 295-228 392
+                   62 12 122 10 178-6-44 102-132 178-264 230-132-52-220-128-264-230
+                   56 16 116 18 178 6C222 394 146 264 164 99c75 95 155 163 240 205
+                   -24-69 -9-149 46-244z" fill="url(#wm-grad)" opacity=".8"/>
+        </svg>
+
+        <div class="topbar" id="topbar" style="display:none;">
+          <div class="progress"><span id="progressBar"></span></div>
+          <div class="qcount" id="qCount">Frage 1 von 10</div>
+        </div>
+
+        <div class="card-inner view">
+          <section class="panel active" id="panelStart">
+            <h1>Wo stehst du wirklich im Leben?</h1>
+            <p class="sub">Finde heraus, welche innere Version gerade führt – und was dein nächster stabiler Schritt ist.</p>
+            <button class="btn btn-primary" id="startBtn" type="button">Quiz starten</button>
+            <p class="hint">Dauer: ca. 3–4 Minuten. Du bekommst am Ende eine klare Auswertung.</p>
+          </section>
+
+          <section class="panel" id="panelQuiz">
+            <p class="question-title" id="questionText"></p>
+            <div class="options" id="options"></div>
+            <div class="nav">
+              <button class="btn btn-secondary" id="backBtn" type="button">Zurück</button>
+              <button class="btn" id="skipBtn" type="button">Überspringen</button>
+            </div>
+            <p class="hint">Wähle die Antwort, die im Alltag am häufigsten zutrifft.</p>
+          </section>
+
+          <section class="panel" id="panelLead">
+            <h1 style="margin-bottom:6px;">Dein Ergebnis ist bereit</h1>
+            <p class="sub" style="margin-bottom:12px;">Trag kurz deinen Namen und deine E-Mail ein, dann siehst du sofort deine Auswertung.</p>
+
+            <form class="form" id="leadForm" novalidate>
+              <label>Vorname
+                <input id="firstName" type="text" placeholder="z.B. Simone" required />
+                <span class="error" id="errName" style="display:none;">Bitte gib deinen Vornamen ein.</span>
+              </label>
+
+              <label>E-Mail
+                <input id="email" type="email" placeholder="z.B. name@mail.de" required />
+                <span class="error" id="errEmail" style="display:none;">Bitte gib eine gültige E-Mail ein.</span>
+              </label>
+
+              <div class="check">
+                <input id="consent" type="checkbox" required />
+                <div>
+                  <strong>Ich möchte mein Ergebnis erhalten und Impulse zur Standortbestimmung bekommen.</strong>
+                </div>
+              </div>
+              <span class="error" id="errConsent" style="display:none;">Bitte setze das Häkchen.</span>
+
+              <button class="btn btn-primary" type="submit">Ergebnis anzeigen</button>
+            </form>
+          </section>
+
+          <section class="panel" id="panelResult">
+            <span class="pill" id="resultPill">Identitätsprofil</span>
+            <h2 class="result-title" id="resultTitle"></h2>
+            <p class="sub" id="resultShort"></p>
+
+            <div class="result-grid">
+              <div class="box">
+                <h3>Was dich stärkt</h3>
+                <ul id="resultStrength"></ul>
+              </div>
+              <div class="box">
+                <h3>Woran du es im Alltag merkst</h3>
+                <ul id="resultSignals"></ul>
+              </div>
+              <div class="box" style="grid-column: 1 / -1;">
+                <h3>Dein nächster Schritt</h3>
+                <p id="resultNextStep"></p>
+              </div>
+            </div>
+
+            <div class="ctaRow">
+              <a class="btn btn-primary" id="ctaStandort" href="https://DEIN-LINK" target="_blank" rel="noopener">Standortbestimmung vertiefen</a>
+              <a class="btn btn-small" id="ctaWebinar" href="https://DEIN-LINK" target="_blank" rel="noopener">Selbstsabotage lösen mit der AUV-Regel (77 €)</a>
+            </div>
+
+            <p class="footer-note" id="resultMeta"></p>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function track(eventName, payload = {}) { window.dataLayer.push({ event: eventName, ...payload }); }
+
+    const LINKS = {
+      standort: "https://DEIN-LINK",
+      webinar77: "https://DEIN-LINK"
+    };
+    const LEAD_ENDPOINT = "https://example.com/lead";
+    const STORAGE_KEY = "phoenix_quiz_result_v1";
+
+    const PROFILES = {
+      funktionierende: "Die Funktionierende",
+      suchende: "Die Suchende",
+      kontrollierende: "Die Kontrollierende",
+      erschoepfte: "Die Erschöpfte Leistungsstarke",
+      reife: "Die Reife Schwelle"
+    };
+    const PRIORITY = ["reife", "erschoepfte", "kontrollierende", "suchende", "funktionierende"];
+
+    const RESULT_COPY = {
+      funktionierende: {
+        title: PROFILES.funktionierende,
+        short: "Du hältst viel zusammen, oft leise und zuverlässig. Du funktionierst, weil es dir Stabilität gibt. Der Haken: Dein eigenes Inneres wird dabei schnell zur Nebensache.",
+        strength: [
+          "Du bist verlässlich und bekommst Dinge sauber zu Ende.",
+          "Du bleibst handlungsfähig, auch wenn es emotional wackelt.",
+          "Du kannst Verantwortung tragen, ohne Drama zu machen."
+        ],
+        signals: [
+          "Du sagst oft „passt schon“, obwohl du innerlich müde bist.",
+          "Du merkst deine Bedürfnisse erst, wenn der Körper lauter wird.",
+          "Du fühlst dich nur ruhig, wenn du alles im Griff hast."
+        ],
+        next: "Dein nächster stabiler Schritt ist: jeden Tag eine kleine Entscheidung nur für dich treffen und sie konsequent halten. So holst du Führung zurück zu dir."
+      },
+      suchende: {
+        title: PROFILES.suchende,
+        short: "Du spürst: Da ist mehr möglich – und gleichzeitig fehlt dir der innere Boden, auf dem Entscheidungen leicht werden. Dein System will Sicherheit, bevor es losgeht.",
+        strength: [
+          "Du hast ein feines Gespür für Möglichkeiten.",
+          "Du reflektierst tief und erkennst schnell Muster.",
+          "Du bist offen für Veränderung und willst stimmig leben."
+        ],
+        signals: [
+          "Du startest viel, wechselst schnell, und fühlst dich danach leer.",
+          "Du denkst viel und drehst dich im Kreis, bevor du entscheidest.",
+          "Du suchst Bestätigung von außen, bevor du dir vertraust."
+        ],
+        next: "Dein nächster stabiler Schritt ist: eine Sache für 7 Tage festlegen und täglich prüfen, was deinen Boden stärkt. Weniger Optionen, mehr Verlässlichkeit."
+      },
+      kontrollierende: {
+        title: PROFILES.kontrollierende,
+        short: "Kontrolle ist bei dir ein Schutz: Wenn du alles analysierst, musst du weniger fühlen. Der Kopf ordnet viel, beruhigt dein Nervensystem jedoch nicht automatisch.",
+        strength: [
+          "Du erkennst Risiken früh und denkst strategisch.",
+          "Du kannst klare Grenzen setzen, wenn es nötig ist.",
+          "Du bist handlungsstark und verlierst dich selten im Chaos."
+        ],
+        signals: [
+          "Du hast innerlich Druck, auch wenn im Außen alles passt.",
+          "Du optimierst viel, weil Unsicherheit schwer auszuhalten ist.",
+          "Du wirst gereizt, wenn Dinge unklar oder unzuverlässig sind."
+        ],
+        next: "Dein nächster stabiler Schritt ist: eine feste Mini-Routine, die dein Nervensystem beruhigt. So wird Kontrolle zu Klarheit – und du bleibst innerlich weich."
+      },
+      erschoepfte: {
+        title: PROFILES.erschoepfte,
+        short: "Du bist leistungsstark und hast lange durchgezogen. Nach außen wirkst du stabil, innen ist die Batterie oft leer. Dein System braucht Entlastung und echte Ordnung.",
+        strength: [
+          "Du hast Durchhaltevermögen und setzt viel um.",
+          "Du bist loyal und gibst nicht sofort auf.",
+          "Du kannst Verantwortung tragen und Menschen mitziehen."
+        ],
+        signals: [
+          "Einfache Entscheidungen werden zäh, weil alles zu viel ist.",
+          "Du funktionierst – und fällst danach innerlich ab.",
+          "Freude kommt seltener durch, weil dein System voll ist."
+        ],
+        next: "Dein nächster stabiler Schritt ist: Priorität statt noch mehr Optimierung. Erst Stabilität im System, dann Ziele. Dann wird Umsetzung wieder leicht."
+      },
+      reife: {
+        title: PROFILES.reife,
+        short: "Du stehst an einer reifen Schwelle: Du weißt, was nicht mehr passt, und du bist bereit für Klarheit ohne Umwege. Du willst Ordnung, die dich innerlich stabil macht.",
+        strength: [
+          "Du erkennst Wahrheit schnell und willst stimmig handeln.",
+          "Du hast die Reife, Konsequenzen zu tragen, ohne dich zu verlieren.",
+          "Du spürst: Stabilität entsteht von innen – und dafür bist du bereit."
+        ],
+        signals: [
+          "Du bist ungeduldig mit halben Lösungen.",
+          "Du willst klare Schritte statt Gedankenschleifen.",
+          "Du merkst: Du bist näher an dir – und genau deshalb wird es ernst."
+        ],
+        next: "Dein nächster stabiler Schritt ist: Standort bestimmen. Wenn du weißt, wo du innerlich wirklich stehst, wird Entscheidung leicht und Umsetzung sauber."
+      }
+    };
+
+    const QUESTIONS = [
+      {
+        text: "Wenn du eine wichtige Entscheidung treffen sollst, was passiert am häufigsten?",
+        options: [
+          { label: "A", text: "Ich mache erst alles fertig und entscheide dann – Hauptsache, der Alltag läuft.", score: { funktionierende: 1 } },
+          { label: "B", text: "Ich sammle Infos, rede mit anderen, denke viel – und schiebe es gerne noch etwas.", score: { suchende: 1 } },
+          { label: "C", text: "Ich analysiere Risiken, plane Varianten und will möglichst alles absichern.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich spüre Druck im Körper und werde langsam, weil mir die Energie fehlt.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Ich werde still, spüre in mich hinein und entscheide klar – ohne viel Drama.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Wie reagierst du, wenn jemand deine Grenze überschreitet?",
+        options: [
+          { label: "A", text: "Ich schlucke es runter und regele das später, damit es ruhig bleibt.", score: { funktionierende: 1 } },
+          { label: "B", text: "Ich merke es, bin unsicher und ärgere mich erst danach über mich.", score: { suchende: 1 } },
+          { label: "C", text: "Ich werde direkt klar – ich will das sofort stoppen.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich ziehe mich zurück, weil mein System keinen Kampf mehr will.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Ich setze ruhig eine klare Grenze und bleibe innerlich bei mir.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Was beschreibt deinen Umgang mit Perfektion am besten?",
+        options: [
+          { label: "A", text: "Ordentlich, pragmatisch – Hauptsache, es funktioniert.", score: { funktionierende: 1 } },
+          { label: "B", text: "Ich verliere mich in Varianten, weil ich das Richtige finden will.", score: { suchende: 1 } },
+          { label: "C", text: "Ich kann schwer loslassen, weil Fehler sich wie Kontrollverlust anfühlen.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich will es perfekt, aber mir fehlt die Kraft – das macht mich schwer.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Ich mache es stimmig statt perfekt und lasse es dann gut sein.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Wie fühlt sich dein Nervensystem an, wenn der Tag voll ist?",
+        options: [
+          { label: "A", text: "Ich bleibe in Bewegung und merke erst abends, wie viel das war.", score: { funktionierende: 1 } },
+          { label: "B", text: "Ich werde unruhig und finde schwer in Fokus.", score: { suchende: 1 } },
+          { label: "C", text: "Ich werde straffer und will, dass alles nach Plan läuft.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich fühle mich leer oder gereizt und brauche Rückzug.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Ich kann mich regulieren: kurz stoppen, atmen, klar weitergehen.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Wenn du an Beziehung denkst: Was trifft am ehesten zu?",
+        options: [
+          { label: "A", text: "Ich bin oft die, die trägt und stabil hält.", score: { funktionierende: 1 } },
+          { label: "B", text: "Ich wünsche mir mehr Sicherheit in mir.", score: { suchende: 1 } },
+          { label: "C", text: "Ich will Verlässlichkeit – sonst werde ich schnell streng.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich liebe tief, aber habe weniger Kapazität und brauche mehr Ruhe.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Ich bin nah, ohne mich zu verlieren, und spreche Dinge ruhig aus.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Wie gehst du mit Aufschieberitis um?",
+        options: [
+          { label: "A", text: "Ich erledige lieber schnell, damit Ruhe ist.", score: { funktionierende: 1 } },
+          { label: "B", text: "Ich schiebe, wenn ich unsicher bin – dann denke ich zu viel.", score: { suchende: 1 } },
+          { label: "C", text: "Ich schiebe, wenn ich nicht alles kontrollieren kann.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich schiebe, weil die Energie fehlt und alles zu groß wirkt.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Ich mache klein, klar, und gehe Schritt für Schritt.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Was passiert, wenn du Kritik bekommst?",
+        options: [
+          { label: "A", text: "Ich nehme es an und mache weiter.", score: { funktionierende: 0.7, erschoepfte: 0.3 } },
+          { label: "B", text: "Ich werde unsicher und suche Bestätigung.", score: { suchende: 1 } },
+          { label: "C", text: "Ich gehe in Argumente, um mich abzusichern.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich knicke innerlich weg, weil ich am Limit bin.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Ich prüfe ruhig: Was stimmt, was passt nicht.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Wie fühlt sich dein Selbstwert im Alltag am häufigsten an?",
+        options: [
+          { label: "A", text: "Okay, wenn ich Leistung bringe und alles läuft.", score: { funktionierende: 0.7, kontrollierende: 0.3 } },
+          { label: "B", text: "Schwankend – je nachdem, was im Außen passiert.", score: { suchende: 1 } },
+          { label: "C", text: "Ich halte mich über Standards, sonst fühle ich mich angreifbar.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Ich weiß, was ich kann, aber ich fühle mich oft müde.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Stabil – auch ohne Leistung.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Was trifft auf deine innere Klarheit am ehesten zu?",
+        options: [
+          { label: "A", text: "Ich weiß, was zu tun ist, frage aber selten, was ich brauche.", score: { funktionierende: 1 } },
+          { label: "B", text: "Ich spüre viel, aber es ist diffus.", score: { suchende: 1 } },
+          { label: "C", text: "Klar im Kopf, aber innerlich angespannt.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Klarheit ist da, aber mein System ist zu voll.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Wenn ich ehrlich hinschaue, werde ich klar und handle.", score: { reife: 1 } }
+        ]
+      },
+      {
+        text: "Wann fühlst du echte Freude am ehesten?",
+        options: [
+          { label: "A", text: "Wenn alles erledigt ist und ich kurz durchatmen kann.", score: { funktionierende: 1 } },
+          { label: "B", text: "Wenn etwas Neues anfängt und es sich nach Möglichkeit anfühlt.", score: { suchende: 1 } },
+          { label: "C", text: "Wenn alles nach Plan läuft und ich Kontrolle spüre.", score: { kontrollierende: 1 } },
+          { label: "D", text: "Wenn mein Körper weich wird und ich runterkomme.", score: { erschoepfte: 1 } },
+          { label: "E", text: "Wenn ich ruhig in mir bin und das Leben simpel wird.", score: { reife: 1 } }
+        ]
+      }
+    ];
+
+    const state = {
+      step: "start",
+      qIndex: 0,
+      answers: Array(QUESTIONS.length).fill(null),
+      scores: { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 },
+      resultProfile: null
+    };
+
+    const topbar = document.getElementById("topbar");
+    const progressBar = document.getElementById("progressBar");
+    const qCount = document.getElementById("qCount");
+
+    const panelStart = document.getElementById("panelStart");
+    const panelQuiz = document.getElementById("panelQuiz");
+    const panelLead = document.getElementById("panelLead");
+    const panelResult = document.getElementById("panelResult");
+
+    const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    const questionText = document.getElementById("questionText");
+    const optionsEl = document.getElementById("options");
+    const backBtn = document.getElementById("backBtn");
+    const skipBtn = document.getElementById("skipBtn");
+
+    const leadForm = document.getElementById("leadForm");
+    const firstNameEl = document.getElementById("firstName");
+    const emailEl = document.getElementById("email");
+    const consentEl = document.getElementById("consent");
+    const errName = document.getElementById("errName");
+    const errEmail = document.getElementById("errEmail");
+    const errConsent = document.getElementById("errConsent");
+
+    const resultTitle = document.getElementById("resultTitle");
+    const resultShort = document.getElementById("resultShort");
+    const resultStrength = document.getElementById("resultStrength");
+    const resultSignals = document.getElementById("resultSignals");
+    const resultNextStep = document.getElementById("resultNextStep");
+    const resultMeta = document.getElementById("resultMeta");
+
+    const ctaStandort = document.getElementById("ctaStandort");
+    const ctaWebinar = document.getElementById("ctaWebinar");
+
+    function showPanel(which){
+      [panelStart, panelQuiz, panelLead, panelResult].forEach(p => p.classList.remove("active"));
+      if(which==="start") panelStart.classList.add("active");
+      if(which==="quiz") panelQuiz.classList.add("active");
+      if(which==="lead") panelLead.classList.add("active");
+      if(which==="result") panelResult.classList.add("active");
+      topbar.style.display = (which==="quiz") ? "flex" : "none";
+      window.scrollTo({ top:0, behavior:"smooth" });
+    }
+
+    function updateProgress(){
+      const total = QUESTIONS.length;
+      qCount.textContent = `Frage ${state.qIndex+1} von ${total}`;
+      progressBar.style.width = `${(state.qIndex/total)*100}%`;
+    }
+
+    function recalcScores(){
+      state.scores = { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 };
+      state.answers.forEach((optIndex, qIndex) => {
+        if(optIndex===null) return;
+        const scoring = QUESTIONS[qIndex].options[optIndex].score;
+        for(const k in scoring) state.scores[k] += scoring[k];
+      });
+    }
+
+    function renderQuestion(){
+      const q = QUESTIONS[state.qIndex];
+      questionText.textContent = q.text;
+      optionsEl.innerHTML = "";
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opt";
+        btn.innerHTML = `<div class="badge">${opt.label}</div><div class="txt">${opt.text}</div>`;
+        btn.addEventListener("click", () => answerQuestion(idx));
+        optionsEl.appendChild(btn);
+      });
+      backBtn.disabled = (state.qIndex===0);
+      updateProgress();
+    }
+
+    function answerQuestion(optIndex){
+      state.answers[state.qIndex] = optIndex;
+      recalcScores();
+      track("quiz_question_answered", { question_index: state.qIndex+1, selected_option: ["A","B","C","D","E"][optIndex] });
+
+      if(state.qIndex === QUESTIONS.length-1){
+        track("quiz_completed", { total_questions: QUESTIONS.length });
+        showPanel("lead");
+        return;
+      }
+      state.qIndex++;
+      renderQuestion();
+    }
+
+    function determineResultProfile(){
+      const entries = Object.entries(state.scores);
+      let max = Math.max(...entries.map(([,v])=>v));
+      const tied = entries.filter(([,v])=>v===max).map(([k])=>k);
+      if(tied.length===1) return tied[0];
+      for(const p of PRIORITY) if(tied.includes(p)) return p;
+      return tied[0] || "funktionierende";
+    }
+
+    function validEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim()); }
+
+    function setError(el, show){ el.style.display = show ? "block" : "none"; }
+
+    async function simulateLeadSubmit(payload){
+      try{
+        await fetch(LEAD_ENDPOINT, {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify(payload)
+        });
+      }catch(e){}
+    }
+
+    function saveLocalResult(record){
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(record)); }catch(e){}
+    }
+    function clearLocalResult(){
+      try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    }
+
+    function renderResult(profileKey, firstName){
+      const copy = RESULT_COPY[profileKey];
+      resultTitle.textContent = `${firstName ? firstName + ", " : ""}${copy.title}`;
+      resultShort.textContent = copy.short;
+
+      resultStrength.innerHTML = "";
+      copy.strength.forEach(t => { const li=document.createElement("li"); li.textContent=t; resultStrength.appendChild(li); });
+
+      resultSignals.innerHTML = "";
+      copy.signals.forEach(t => { const li=document.createElement("li"); li.textContent=t; resultSignals.appendChild(li); });
+
+      resultNextStep.textContent = copy.next;
+
+      const now = new Date();
+      resultMeta.textContent = `Gespeichert: ${now.toLocaleString("de-DE")}`;
+
+      track("result_shown", { result_profile: copy.title });
+    }
+
+    function resetQuiz(clearStorage){
+      state.qIndex = 0;
+      state.answers = Array(QUESTIONS.length).fill(null);
+      state.scores = { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 };
+      state.resultProfile = null;
+
+      firstNameEl.value = "";
+      emailEl.value = "";
+      consentEl.checked = false;
+      setError(errName,false); setError(errEmail,false); setError(errConsent,false);
+
+      progressBar.style.width = "0%";
+      if(clearStorage) clearLocalResult();
+      showPanel("start");
+    }
+
+    startBtn.addEventListener("click", () => {
+      track("quiz_start", { total_questions: QUESTIONS.length });
+      showPanel("quiz");
+      state.qIndex = 0;
+      renderQuestion();
+    });
+
+    backBtn.addEventListener("click", () => {
+      if(state.qIndex===0) return;
+      state.qIndex--;
+      renderQuestion();
+    });
+
+    skipBtn.addEventListener("click", () => {
+      if(state.qIndex === QUESTIONS.length-1){
+        track("quiz_completed", { total_questions: QUESTIONS.length, skipped:true });
+        showPanel("lead");
+        return;
+      }
+      state.qIndex++;
+      renderQuestion();
+    });
+
+    restartBtn.addEventListener("click", () => {
+      const shouldClear = confirm("Willst du den Quiz neu starten und das gespeicherte Ergebnis löschen?");
+      resetQuiz(shouldClear);
+    });
+
+    ctaStandort.addEventListener("click", () => track("cta_click", { cta_type:"standort" }));
+    ctaWebinar.addEventListener("click", () => track("cta_click", { cta_type:"77webinar" }));
+    ctaStandort.href = LINKS.standort;
+    ctaWebinar.href = LINKS.webinar77;
+
+    leadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const firstName = String(firstNameEl.value||"").trim();
+      const email = String(emailEl.value||"").trim();
+      const consent = !!consentEl.checked;
+
+      const okName = firstName.length >= 2;
+      const okEmail = validEmail(email);
+      const okConsent = consent;
+
+      setError(errName, !okName);
+      setError(errEmail, !okEmail);
+      setError(errConsent, !okConsent);
+      if(!okName || !okEmail || !okConsent) return;
+
+      const profileKey = determineResultProfile();
+      state.resultProfile = profileKey;
+
+      track("lead_submitted", {});
+      const record = {
+        version: 1,
+        timestamp: Date.now(),
+        lead: { firstName, email, consent },
+        result: { profileKey, profileLabel: RESULT_COPY[profileKey].title, scores: state.scores, answers: state.answers }
+      };
+
+      saveLocalResult(record);
+      await simulateLeadSubmit(record);
+
+      showPanel("result");
+      renderResult(profileKey, firstName);
+    });
+
+    // init
+    resetQuiz(false);
+  </script>
+</body>
+</html>
 
