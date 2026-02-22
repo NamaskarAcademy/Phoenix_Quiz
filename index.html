@@ -8,369 +8,189 @@
 
   <style>
     :root{
-      --bg: #fbfaf7;
-      --card: #ffffff;
-      --text: #1c1b1a;
-      --muted: #5c5956;
-      --line: rgba(28,27,26,.12);
-      --shadow: 0 14px 34px rgba(28,27,26,.10);
-      --shadow2: 0 2px 10px rgba(28,27,26,.08);
+      --bg:#fbfaf7; --card:#fff; --text:#1c1b1a; --muted:#5c5956;
+      --line:rgba(28,27,26,.12); --shadow:0 14px 34px rgba(28,27,26,.10);
+      --shadow2:0 2px 10px rgba(28,27,26,.08);
 
-      --gold: #e7daab;
-      --bordeaux: #76094b;
+      --gold:#e7daab; --bordeaux:#76094b;
 
-      --radius: 18px;
-      --radius2: 14px;
-
-      --focus: rgba(118, 9, 75, .22);
-      --danger: #b42318;
-
-      --ease: cubic-bezier(.2,.8,.2,1);
+      --radius:18px; --radius2:14px;
+      --ease:cubic-bezier(.2,.8,.2,1);
     }
-
-    *{ box-sizing: border-box; }
-    html, body{ height: 100%; }
-
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-      color: var(--text);
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      color:var(--text);
       background:
         radial-gradient(1200px 600px at 20% 0%, rgba(231,218,171,.28), transparent 60%),
         radial-gradient(900px 520px at 90% 10%, rgba(118,9,75,.09), transparent 55%),
         var(--bg);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      line-height: 1.45;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
     }
 
-    .wrap{
-      min-height: 100%;
-      padding: 12px 12px 16px;
-      display: grid;
-      place-items: start center;
-    }
-
-    .app{
-      width: min(980px, 100%);
-      display: grid;
-      gap: 10px;
-    }
+    .wrap{min-height:100%; padding:12px 12px 16px; display:grid; place-items:start center;}
+    .app{width:min(980px,100%); display:grid; gap:10px;}
 
     header{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 4px;
-      gap: 10px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:6px 4px; gap:10px;
     }
-
-    .brandline{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color: var(--muted);
-      font-size: 13px;
-      min-width: 0;
-    }
-
+    .brandline{display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px; min-width:0;}
     .logoMark{
-      width: 34px;
-      height: 34px;
-      display:grid;
-      place-items:center;
-      border-radius: 999px;
-      background: rgba(255,255,255,.70);
-      border: 1px solid rgba(118,9,75,.18);
-      box-shadow: var(--shadow2);
-      overflow: hidden;
-      flex: 0 0 auto;
+      width:34px; height:34px; display:grid; place-items:center; border-radius:999px;
+      background:rgba(255,255,255,.70); border:1px solid rgba(118,9,75,.18); box-shadow:var(--shadow2);
+      overflow:hidden; flex:0 0 auto;
     }
-    .logoMark img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display:block;
-    }
-
+    .logoMark img{width:100%; height:100%; object-fit:cover; display:block;}
     .restart{
-      font-size: 13px;
-      color: var(--bordeaux);
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(118,9,75,.18);
-      background: rgba(255,255,255,.70);
-      box-shadow: var(--shadow2);
-      transition: transform .15s var(--ease), background .15s var(--ease);
-      cursor: pointer;
-      user-select: none;
-      white-space: nowrap;
+      font-size:13px; color:var(--bordeaux); padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(118,9,75,.18); background:rgba(255,255,255,.70);
+      box-shadow:var(--shadow2); transition:transform .15s var(--ease), background .15s var(--ease);
+      cursor:pointer; user-select:none; white-space:nowrap;
     }
-    .restart:hover{ transform: translateY(-1px); background: rgba(255,255,255,.95); }
+    .restart:hover{transform:translateY(-1px); background:rgba(255,255,255,.95);}
 
-    .card{
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-
-      /* FIX: genug Höhe, damit letzte Screens NICHT „leer oben“ wirken */
-      min-height: calc(100svh - 74px);
+    main.card{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+      box-shadow:var(--shadow); overflow:hidden; position:relative;
+      min-height:calc(100svh - 74px);
     }
 
-    .wm{
-      position: absolute;
-      inset: -50px -70px auto auto;
-      width: min(560px, 76vw);
-      opacity: .09;
-      pointer-events: none;
-      transform: rotate(6deg);
-      filter: saturate(1.05);
-    }
+    /* dezentes Wasserzeichen */
+    .wm{position:absolute; inset:-50px -70px auto auto; width:min(560px,76vw); opacity:.09; pointer-events:none; transform:rotate(6deg);}
 
-    /* TOPBAR */
-    .topbar{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      padding: 14px 16px 0;
-      position: relative;
-      z-index: 1;
+    /* Progressbar */
+    .topbar{display:flex; align-items:center; gap:12px; padding:14px 16px 0; position:relative; z-index:1;}
+    .progress{flex:1; height:10px; border-radius:999px; background:rgba(28,27,26,.08); overflow:hidden;}
+    .progress>span{
+      display:block; height:100%; width:0%; border-radius:999px;
+      background:linear-gradient(90deg,var(--gold),rgba(231,218,171,.65),rgba(118,9,75,.55));
+      transition:width .35s var(--ease);
     }
-
-    .progress{
-      flex:1;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(28,27,26,.08);
-      overflow: hidden;
-    }
-    .progress > span{
-      display:block;
-      height: 100%;
-      width: 0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--gold), rgba(231,218,171,.65), rgba(118,9,75,.55));
-      transition: width .35s var(--ease);
-    }
-
     .qcount{
-      white-space: nowrap;
-      font-size: 13px;
-      color: var(--muted);
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(28,27,26,.10);
-      background: rgba(251,250,247,.80);
+      white-space:nowrap; font-size:13px; color:var(--muted);
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(28,27,26,.10); background:rgba(251,250,247,.80);
     }
 
     .inner{
-      padding: 18px 16px 18px;
-      position: relative;
-      z-index: 1;
-
-      /* FIX: Kein Scroll/kein „Leerraum oben“ auf Lead/DOI/Result */
-      min-height: calc(100svh - 150px);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+      padding:18px 16px 18px; position:relative; z-index:1;
+      /* Wichtig: sorgt dafür, dass „Letzte Screens“ nicht unten hängen */
+      min-height:calc(100svh - 140px);
+      display:flex; flex-direction:column;
+    }
+    @media (min-width:720px){
+      .inner{padding:24px 22px 22px; min-height:calc(100svh - 150px);}
+      .topbar{padding-left:22px; padding-right:22px;}
     }
 
-    @media (min-width: 720px){
-      .inner{ padding: 24px 22px 22px; min-height: calc(100svh - 160px); }
-      .topbar{ padding-left: 22px; padding-right: 22px; }
-    }
+    /* Typo */
+    h1,h2,.result-title,.qtitle{color:var(--bordeaux);}
+    h1{margin:0 0 14px; font-size:28px; letter-spacing:-.02em; line-height:1.12;}
+    @media (min-width:720px){h1{font-size:36px}}
+    .sub{margin:0 0 18px; color:var(--muted); font-size:15px; max-width:74ch; line-height:1.6;}
 
-    /* TITLES: IMMER BORDEAUX */
-    h1, h2, .result-title, .qtitle{
-      color: var(--bordeaux);
-    }
+    /* Panels */
+    .panel{display:none;}
+    .panel.active{display:block; animation:fadeUp .22s var(--ease) both;}
+    @keyframes fadeUp{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)}}
 
-    h1{
-      margin: 0 0 14px;
-      font-size: 28px;
-      letter-spacing: -0.02em;
-      line-height: 1.12;
+    /* Fragen-Kopf */
+    .qmeta{margin-top:2px; margin-bottom:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .tag{
+      font-size:12px; font-weight:900; letter-spacing:.02em;
+      color:rgba(118,9,75,.98);
+      background:rgba(118,9,75,.06);
+      border:1px solid rgba(118,9,75,.14);
+      padding:7px 10px; border-radius:999px;
     }
-    @media (min-width: 720px){ h1{ font-size: 36px; } }
-
-    .sub{
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 15px;
-      max-width: 74ch;
-      line-height: 1.6;
-    }
-
-    /* PANELS: Fix gegen Scroll/Leerräume -> nur active ist im Layout */
-    .panel{ display:none; }
-    .panel.active{
-      display:block;
-      animation: fadeUp .22s var(--ease) both;
-    }
-    @keyframes fadeUp{
-      from{ opacity:0; transform: translateY(10px); }
-      to{ opacity:1; transform: translateY(0); }
-    }
-
-    /* Quiz */
-    .qmeta{
-      margin-top: 2px;
-      margin-bottom: 14px;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .qmeta .tag{
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: .02em;
-      color: rgba(118,9,75,.98);
-      background: rgba(118,9,75,.06);
-      border: 1px solid rgba(118,9,75,.14);
-      padding: 7px 10px;
-      border-radius: 999px;
-    }
-
     .qtitle{
-      font-size: 19px;
-      margin: 0 0 14px;
-      letter-spacing: -0.01em;
-      line-height: 1.35;
+      font-size:19px; margin:0 0 14px;
+      letter-spacing:-.01em; line-height:1.35;
     }
 
-    .options{
-      display:grid;
-      gap: 10px;
-      margin: 12px 0 18px;
-    }
-
+    /* Optionen */
+    .options{display:grid; gap:10px; margin:12px 0 18px;}
     .opt{
-      display:flex;
-      gap: 12px;
-      align-items:flex-start;
-      padding: 14px 14px;
-      border-radius: var(--radius2);
-      border: 1px solid rgba(28,27,26,.12);
-      background: rgba(251,250,247,.76);
-      cursor: pointer;
-      transition: transform .12s var(--ease), border-color .12s var(--ease), background .12s var(--ease);
-      user-select: none;
-      min-height: 56px;
-      text-align: left;
-      width: 100%;
+      display:flex; gap:12px; align-items:flex-start;
+      padding:14px; border-radius:var(--radius2);
+      border:1px solid rgba(28,27,26,.12);
+      background:rgba(251,250,247,.76);
+      cursor:pointer;
+      transition:transform .12s var(--ease), border-color .12s var(--ease), background .12s var(--ease);
+      user-select:none;
+      min-height:56px; text-align:left; width:100%;
     }
-    .opt:hover{
-      transform: translateY(-1px);
-      border-color: rgba(118,9,75,.22);
-      background: rgba(231,218,171,.16);
-    }
-
+    .opt:hover{transform:translateY(-1px); border-color:rgba(118,9,75,.22); background:rgba(231,218,171,.16);}
     .badge{
-      width: 28px; height: 28px;
-      border-radius: 10px;
-      display:grid; place-items:center;
-      font-weight: 900;
-      font-size: 13px;
-      background: rgba(231,218,171,.35);
-      border: 1px solid rgba(231,218,171,.75);
-      margin-top: 1px;
-      flex: 0 0 auto;
-      color: var(--text);
+      width:28px; height:28px; border-radius:10px;
+      display:grid; place-items:center; font-weight:900; font-size:13px;
+      background:rgba(231,218,171,.35); border:1px solid rgba(231,218,171,.75);
+      margin-top:1px; flex:0 0 auto;
     }
-    .opt .txt{ flex: 1; font-size: 15px; color: var(--text); }
+    .opt .txt{flex:1; font-size:15px;}
 
-    .nav{
-      display:flex;
-      gap: 10px;
-      justify-content: space-between;
-      align-items:center;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
+    /* Navigation */
+    .nav{display:flex; gap:10px; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-top:10px;}
     .btn{
-      border: 1px solid rgba(28,27,26,.14);
-      background: #fff;
-      color: var(--text);
-      border-radius: 999px;
-      padding: 12px 16px;
-      font-weight: 900;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: var(--shadow2);
-      transition: transform .14s var(--ease), border-color .14s var(--ease), background .14s var(--ease);
-      min-height: 44px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      border:1px solid rgba(28,27,26,.14);
+      background:#fff; color:var(--text);
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:900; font-size:14px;
+      cursor:pointer;
+      box-shadow:var(--shadow2);
+      transition:transform .14s var(--ease), border-color .14s var(--ease), background .14s var(--ease);
+      min-height:44px;
+      text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
     }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(118,9,75,.22); }
-
+    .btn:hover{transform:translateY(-1px); border-color:rgba(118,9,75,.22);}
     .btn-primary{
-      background: linear-gradient(180deg, rgba(118,9,75,.92), rgba(118,9,75,1));
-      color: #fff;
-      border-color: rgba(118,9,75,.4);
+      background:linear-gradient(180deg, rgba(118,9,75,.92), rgba(118,9,75,1));
+      color:#fff; border-color:rgba(118,9,75,.4);
     }
-    .btn-soft{
-      background: rgba(231,218,171,.22);
-      border-color: rgba(231,218,171,.65);
-    }
-    .btn-small{
-      padding: 10px 14px;
-      font-size: 13px;
-      box-shadow: none;
-    }
+    .btn-soft{background:rgba(231,218,171,.22); border-color:rgba(231,218,171,.65);}
+    .btn-small{padding:10px 14px; font-size:13px; box-shadow:none;}
 
-    .hint{ font-size: 13px; color: var(--muted); margin: 10px 0 0; }
-
-    /* Result boxes */
+    .hint{font-size:13px; color:var(--muted); margin:10px 0 0;}
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(231,218,171,.22);
-      border: 1px solid rgba(231,218,171,.60);
-      width: fit-content;
-      color: var(--text);
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight:900; font-size:13px;
+      padding:8px 12px; border-radius:999px;
+      background:rgba(231,218,171,.22); border:1px solid rgba(231,218,171,.60);
+      width:fit-content;
     }
 
-    .result-title{
-      margin: 10px 0 10px;
-      font-size: 24px;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-    @media (min-width: 720px){ .result-title{ font-size: 30px; } }
-
-    .grid{ display:grid; gap: 12px; margin-top: 12px; }
-    @media (min-width: 860px){ .grid{ grid-template-columns: 1fr 1fr; gap: 14px; } }
-
+    /* Ergebnis */
+    .result-title{margin:10px 0 10px; font-size:24px; letter-spacing:-.02em; line-height:1.15;}
+    @media (min-width:720px){.result-title{font-size:30px}}
+    .grid{display:grid; gap:12px; margin-top:12px;}
+    @media (min-width:860px){.grid{grid-template-columns:1fr 1fr; gap:14px}}
     .box{
-      border: 1px solid rgba(28,27,26,.10);
-      background: rgba(251,250,247,.72);
-      border-radius: 16px;
-      padding: 14px 14px;
+      border:1px solid rgba(28,27,26,.10);
+      background:rgba(251,250,247,.72);
+      border-radius:16px;
+      padding:14px;
     }
-    .box h3{ margin: 0 0 8px; font-size: 14px; color: var(--text); }
-    .box p, .box ul{ margin: 0; font-size: 14px; line-height: 1.55; color: var(--text); }
-    .box ul{ padding-left: 18px; }
-    .box li{ margin: 6px 0; }
+    .box h3{margin:0 0 8px; font-size:14px;}
+    .box p,.box ul{margin:0; font-size:14px; line-height:1.55;}
+    .box ul{padding-left:18px;}
+    .box li{margin:6px 0;}
+    .ctaRow{display:flex; flex-direction:column; gap:10px; margin-top:16px;}
+    @media (min-width:720px){.ctaRow{flex-direction:row; align-items:center}}
+    .footer-note{margin-top:10px; color:var(--muted); font-size:12px;}
 
-    .ctaRow{ display:flex; flex-direction: column; gap: 10px; margin-top: 16px; }
-    @media (min-width: 720px){ .ctaRow{ flex-direction: row; align-items:center; } }
-
-    .footer-note{ margin-top: 10px; color: var(--muted); font-size: 12px; }
-    .tiny{ font-size: 12px; color: var(--muted); margin-top: 10px; }
+    /* Damit Lead/Result nicht „unten kleben“ */
+    .screenTop{
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      min-height:calc(100svh - 160px);
+    }
   </style>
 </head>
 
@@ -378,19 +198,18 @@
   <div class="wrap">
     <div class="app">
       <header>
-        <div class="brandline" aria-label="Quiz">
-          <span class="logoMark" title="Phoenix" aria-hidden="true">
-            <!-- Logo-Datei in GitHub: phoenix-logo.png -->
+        <div class="brandline">
+          <span class="logoMark" aria-hidden="true">
+            <!-- HIER Logo-Dateiname anpassen, falls nötig -->
             <img src="phoenix-logo.png" alt="" />
           </span>
-          <span>Quiz: Standort im Leben</span>
+          <span>Phoenix Quiz</span>
         </div>
-
         <button class="restart" id="restartBtn" type="button">Neu starten</button>
       </header>
 
-      <main class="card" aria-live="polite">
-        <svg class="wm" viewBox="0 0 900 700" aria-hidden="true" focusable="false">
+      <main class="card">
+        <svg class="wm" viewBox="0 0 900 700" aria-hidden="true">
           <defs>
             <linearGradient id="wmGrad" x1="0" x2="1" y1="0" y2="1">
               <stop offset="0" stop-color="#e7daab"></stop>
@@ -404,7 +223,7 @@
         </svg>
 
         <div class="topbar" id="topbar" style="display:none;">
-          <div class="progress" aria-label="Fortschritt"><span id="progressBar"></span></div>
+          <div class="progress"><span id="progressBar"></span></div>
           <div class="qcount" id="qCount">Frage 1 von 10</div>
         </div>
 
@@ -435,18 +254,15 @@
             <p class="hint">Wähle die Antwort, die im Alltag am häufigsten zutrifft.</p>
           </section>
 
-          <!-- LEAD / REDIRECT -->
-          <section class="panel" id="panelLead">
+          <!-- LEAD -->
+          <section class="panel screenTop" id="panelLead">
             <h1>Jetzt Auswertung erhalten</h1>
-            <p class="sub">
-              Als nächstes bestätigst du deine E-Mail-Adresse. Danach öffnet sich automatisch deine Auswertung.
-            </p>
+            <p class="sub">Du wirst zur E-Mail-Bestätigung geführt. Danach öffnet sich deine Auswertung automatisch.</p>
 
             <div class="box">
               <h3>So läuft es ab</h3>
               <ul>
-                <li>Du wirst zur Bestätigungsseite weitergeleitet</li>
-                <li>Du trägst deine E-Mail ein</li>
+                <li>Du trägst deine Daten ein</li>
                 <li>Du klickst den Bestätigungslink in der Mail</li>
                 <li>Deine Auswertung öffnet sich automatisch</li>
               </ul>
@@ -457,17 +273,11 @@
               <button class="btn btn-small" id="skipBtn" type="button">Später</button>
             </div>
 
-            <p class="hint">
-              Tipp: Posteingang prüfen. Wenn du keine Mail siehst, prüfe den Spam-Ordner.
-            </p>
-
-            <p class="tiny">
-              Technisch: Du wirst zu Quentn weitergeleitet. Dort läuft Double Opt-in und die Zustellung der Auswertung.
-            </p>
+            <p class="hint">Tipp: Posteingang prüfen. Wenn du keine Mail siehst, prüfe den Spam-Ordner.</p>
           </section>
 
           <!-- RESULT -->
-          <section class="panel" id="panelResult">
+          <section class="panel screenTop" id="panelResult">
             <span class="pill">Identitätsprofil</span>
             <h2 class="result-title" id="resultTitle"></h2>
             <p class="sub" id="resultShort"></p>
@@ -490,7 +300,7 @@
             </div>
 
             <div class="ctaRow">
-              <!-- LINKS HIER ERSETZEN -->
+              <!-- HIER CTA-Links setzen -->
               <a class="btn btn-primary" id="ctaStandort" href="https://DEIN-LINK" target="_blank" rel="noopener">Standortbestimmung vertiefen</a>
               <a class="btn btn-small" id="ctaWebinar" href="https://DEIN-LINK" target="_blank" rel="noopener">Selbstsabotage lösen mit der AUV-Regel (77 €)</a>
             </div>
@@ -503,29 +313,34 @@
   </div>
 
   <script>
-    /* ===========================
-       TRACKING HOOKS (GTM später)
-       =========================== */
+    /* =========================
+       TRACKING (GTM / dataLayer)
+       ========================= */
     window.dataLayer = window.dataLayer || [];
-    function track(eventName, payload = {}) { window.dataLayer.push({ event: eventName, ...payload }); }
+    function track(eventName, payload = {}) {
+      window.dataLayer.push({ event: eventName, ...payload });
+    }
 
-    /* ===========================
-       LINKS: HIER ANPASSEN
-       =========================== */
+    /* =========================
+       LINKS ANPASSEN
+       ========================= */
     const LINKS = {
       standort: "https://DEIN-LINK",
       webinar77: "https://DEIN-LINK"
     };
 
-    /* ===========================
-       QUENTN LANDINGPAGE (Formular-Seite)
-       -> Wichtig: Das ist deine Quentn-Seite mit dem Formular-Widget
-       =========================== */
-    const QUENTN_LANDINGPAGE = "https://namaskar-institut.eu-4.quentn-site.com/quizerfuellung";
+    /* =========================
+       QUENTN: DEINE NEUE LANDINGPAGE
+       =========================
+       Diese Seite enthält dein Quentn-Formular.
+       Das Profil wird per URL übergeben als:
+       ?field_quiz_ergebnisprofil=...
+    */
+    const QUENTN_LANDINGPAGE = "https://namaskar-institut.eu-4.quentn-site.com/phoenixquizstandortbestimmung";
 
-    /* ===========================
-       PROFILE / PRIORITÄT
-       =========================== */
+    /* =========================
+       PROFILE
+       ========================= */
     const PROFILES = {
       funktionierende: "Die Funktionierende",
       suchende: "Die Suchende",
@@ -533,334 +348,304 @@
       erschoepfte: "Die Erschöpfte Leistungsstarke",
       reife: "Die Reife Schwelle"
     };
+    const PRIORITY = ["reife","erschoepfte","kontrollierende","suchende","funktionierende"];
 
-    const PRIORITY = ["reife", "erschoepfte", "kontrollierende", "suchende", "funktionierende"];
-
-    /* ===========================
-       ERGEBNIS-COPY
-       =========================== */
+    /* =========================
+       RESULT COPY (kannst du hier jederzeit austauschen)
+       ========================= */
     const RESULT_COPY = {
-      funktionierende: {
-        title: PROFILES.funktionierende,
-        short: "Du hältst viel zusammen – zuverlässig, pragmatisch, oft leise. Stabilität entsteht bei dir über Tun. Dein Inneres rückt dabei schnell in die zweite Reihe.",
-        strength: [
+      funktionierende:{
+        title:PROFILES.funktionierende,
+        short:"Du hältst viel zusammen – zuverlässig, pragmatisch, oft leise. Stabilität entsteht bei dir über Tun. Dein Inneres rückt dabei schnell in die zweite Reihe.",
+        strength:[
           "Du bringst Dinge zu Ende und hältst Struktur.",
           "Du bleibst handlungsfähig, auch wenn es emotional wackelt.",
           "Du übernimmst Verantwortung mit Klarheit."
         ],
-        signals: [
+        signals:[
           "Du merkst Bedürfnisse oft erst, wenn der Körper lauter wird.",
           "Du regelst viel im Außen, damit innen Ruhe entsteht.",
           "Du sagst schnell „passt“, obwohl du mehr brauchst."
         ],
-        next: "Dein nächster Schritt ist eine tägliche Entscheidung, die nur dir dient: klein, klar, konsequent. So kommt Führung zurück zu dir – und Stabilität entsteht von innen."
+        next:"Dein nächster Schritt ist eine tägliche Entscheidung, die nur dir dient: klein, klar, konsequent. So kommt Führung zurück zu dir – und Stabilität entsteht von innen."
       },
-
-      suchende: {
-        title: PROFILES.suchende,
-        short: "Du spürst Möglichkeiten und willst stimmig leben. Gleichzeitig fehlt oft der innere Boden, damit Entscheidungen leicht werden. Dein System will Sicherheit, bevor es losgeht.",
-        strength: [
+      suchende:{
+        title:PROFILES.suchende,
+        short:"Du spürst Möglichkeiten und willst stimmig leben. Gleichzeitig fehlt oft der innere Boden, damit Entscheidungen leicht werden. Dein System will Sicherheit, bevor es losgeht.",
+        strength:[
           "Du hast feines Gespür für Sinn und Richtung.",
           "Du erkennst Muster schnell und denkst tief.",
           "Du bist offen für Veränderung und Entwicklung."
         ],
-        signals: [
+        signals:[
           "Du startest viel und wechselst schnell den Fokus.",
           "Du denkst lange nach, bis es sich wirklich klar anfühlt.",
           "Du suchst Orientierung im Außen, obwohl innen schon etwas weiß."
         ],
-        next: "Dein nächster Schritt ist Reduktion: eine Sache, ein Fokus, sieben Tage. Stabilität entsteht, wenn du dir selbst Verlässlichkeit gibst – dann wird Klarheit konkret."
+        next:"Dein nächster Schritt ist Reduktion: eine Sache, ein Fokus, sieben Tage. Stabilität entsteht, wenn du dir selbst Verlässlichkeit gibst – dann wird Klarheit konkret."
       },
-
-      kontrollierende: {
-        title: PROFILES.kontrollierende,
-        short: "Kontrolle ist bei dir ein Schutz: Der Kopf ordnet, damit innen Ruhe entsteht. Das funktioniert – bis der innere Druck dauerhaft ansteigt. Dein Nervensystem will echte Entspannung und klare, ruhige Führung.",
-        strength: [
+      kontrollierende:{
+        title:PROFILES.kontrollierende,
+        short:"Kontrolle ist bei dir ein Schutz: Der Kopf ordnet, damit innen Ruhe entsteht. Das funktioniert – bis der innere Druck dauerhaft ansteigt. Dein Nervensystem will echte Entspannung und klare, ruhige Führung.",
+        strength:[
           "Du erkennst Risiken früh und denkst strategisch.",
           "Du setzt Grenzen und hast hohe Standards.",
           "Du bleibst handlungsstark, auch wenn es anspruchsvoll wird."
         ],
-        signals: [
+        signals:[
           "Im Außen passt vieles, innen bleibt Anspannung.",
           "Du optimierst viel, weil Unsicherheit schwer auszuhalten ist.",
           "Du wirst streng, wenn Dinge unklar oder unzuverlässig sind."
         ],
-        next: "Dein nächster Schritt ist Regulation statt Kontrolle: eine feste Mini-Routine, die den Körper beruhigt. Sobald Ruhe im System entsteht, wird Klarheit leichter als jedes Planen."
+        next:"Dein nächster Schritt ist Regulation statt Kontrolle: eine feste Mini-Routine, die den Körper beruhigt. Sobald Ruhe im System entsteht, wird Klarheit leichter als jedes Planen."
       },
-
-      erschoepfte: {
-        title: PROFILES.erschoepfte,
-        short: "Du bist leistungsstark und hast lange durchgezogen. Nach außen wirkt es stabil – innen ist die Batterie oft leer. Dein System braucht Entlastung, klare Priorität und wieder mehr Luft.",
-        strength: [
+      erschoepfte:{
+        title:PROFILES.erschoepfte,
+        short:"Du bist leistungsstark und hast lange durchgezogen. Nach außen wirkt es stabil – innen ist die Batterie oft leer. Dein System braucht Entlastung, klare Priorität und wieder mehr Luft.",
+        strength:[
           "Du hast Durchhaltevermögen und setzt viel um.",
           "Du bist loyal und bleibst dran, wenn es zählt.",
           "Du kannst Verantwortung tragen und Struktur geben."
         ],
-        signals: [
+        signals:[
           "Einfache Entscheidungen werden zäh, weil alles zu viel wirkt.",
           "Du funktionierst – und fällst danach innerlich ab.",
           "Freude kommt seltener durch, weil dein System voll ist."
         ],
-        next: "Dein nächster Schritt ist Priorität: erst Stabilität im System, dann Ziele. Sobald Druck aus dem Nervensystem weicht, wird Umsetzung wieder klar und tragfähig."
+        next:"Dein nächster Schritt ist Priorität: erst Stabilität im System, dann Ziele. Sobald Druck aus dem Nervensystem weicht, wird Umsetzung wieder klar und tragfähig."
       },
-
-      reife: {
-        title: PROFILES.reife,
-        short: "Du stehst an einer reifen Schwelle: Du willst Wahrheit, klare Schritte und Stabilität von innen. Halbe Lösungen haben ihre Zeit gehabt – jetzt zählt Substanz.",
-        strength: [
+      reife:{
+        title:PROFILES.reife,
+        short:"Du stehst an einer reifen Schwelle: Du willst Wahrheit, klare Schritte und Stabilität von innen. Halbe Lösungen haben ihre Zeit gehabt – jetzt zählt Substanz.",
+        strength:[
           "Du erkennst schnell, was stimmig ist.",
           "Du trägst Konsequenzen, ohne dich zu verlieren.",
           "Du willst Ordnung, die dich innerlich stabil macht."
         ],
-        signals: [
+        signals:[
           "Du willst klare Schritte statt Gedankenschleifen.",
           "Du wirst ruhig, wenn du dich festlegst.",
           "Du spürst: Du bist näher an dir – und dadurch wird es klar."
         ],
-        next: "Dein nächster Schritt ist Standort bestimmen. Wenn du weißt, wo du innerlich wirklich stehst, werden Entscheidung, Grenzen und Umsetzung sauber – und du gehst ohne Umwege."
+        next:"Dein nächster Schritt ist Standort bestimmen. Wenn du weißt, wo du innerlich wirklich stehst, werden Entscheidung, Grenzen und Umsetzung sauber – und du gehst ohne Umwege."
       }
     };
 
-    /* ===========================
-       QUIZ-FRAGEN (10, A–E)
-       =========================== */
+    /* =========================
+       FRAGEN (10)
+       ========================= */
     const QUESTIONS = [
-      {
-        text: "Wenn du eine wichtige Entscheidung triffst, was passiert am häufigsten?",
-        options: [
-          { label:"A", text:"Ich entscheide pragmatisch, damit Alltag und Verantwortung stabil bleiben.", score:{ funktionierende:1 } },
-          { label:"B", text:"Ich sammle Optionen und warte auf innere Klarheit.", score:{ suchende:1 } },
-          { label:"C", text:"Ich plane Varianten und sichere alles ab.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Mein System wird schwer, ich brauche erst Ruhe im Körper.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Ich spüre in mich hinein und entscheide klar – ohne extra Schleifen.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Wie gehst du im Job oder Business mit Druck um?",
-        options: [
-          { label:"A", text:"Ich funktioniere weiter und halte den Laden am Laufen.", score:{ funktionierende:0.7, erschoepfte:0.3 } },
-          { label:"B", text:"Ich verliere Fokus und suche den richtigen nächsten Schritt.", score:{ suchende:1 } },
-          { label:"C", text:"Ich werde straffer: Plan, Kontrolle, Standards.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Ich merke Überlastung und werde innerlich langsam.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Ich stoppe kurz, reguliere, entscheide dann bewusst.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "In Beziehungen: Was trifft am ehesten zu?",
-        options: [
-          { label:"A", text:"Ich bin oft die Stabile und halte viel zusammen.", score:{ funktionierende:1 } },
-          { label:"B", text:"Ich wünsche mir mehr innere Sicherheit und Richtung.", score:{ suchende:1 } },
-          { label:"C", text:"Ich brauche Verlässlichkeit – sonst werde ich streng.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Ich liebe tief, doch mein System braucht mehr Entlastung.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Ich bin nah und bleibe bei mir, auch wenn es emotional wird.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Wenn du Grenzen setzen willst, wie läuft es meistens?",
-        options: [
-          { label:"A", text:"Ich schlucke erst, damit es ruhig bleibt, und kläre später.", score:{ funktionierende:1 } },
-          { label:"B", text:"Ich merke es, ringe innerlich und ärgere mich danach.", score:{ suchende:1 } },
-          { label:"C", text:"Ich stoppe es sofort und werde sehr klar.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Ich ziehe mich zurück, weil Ruhe Vorrang bekommt.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Ich setze ruhig eine klare Grenze und bleibe im Kontakt.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Wie zeigt sich Aufschieberitis bei dir am ehesten?",
-        options: [
-          { label:"A", text:"Ich erledige schnell, damit Ruhe entsteht.", score:{ funktionierende:1 } },
-          { label:"B", text:"Ich warte auf Klarheit und verliere mich in Möglichkeiten.", score:{ suchende:1 } },
-          { label:"C", text:"Ich starte erst, wenn alles kontrollierbar wirkt.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Energie ist knapp, es wirkt wie ein Berg.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Ich mache es klein und gehe Schritt für Schritt.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Perfektion: Was beschreibt dich am besten?",
-        options: [
-          { label:"A", text:"Ordentlich und pragmatisch – Hauptsache es läuft.", score:{ funktionierende:1 } },
-          { label:"B", text:"Viele Varianten, weil ich das Richtige finden will.", score:{ suchende:1 } },
-          { label:"C", text:"Schwer loslassen, weil Fehler sich wie Kontrollverlust anfühlen.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Hoher Anspruch, doch die Batterie ist begrenzt.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Stimmig reicht – ich gehe dann weiter.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Wie fühlt sich dein Selbstwert aktuell an?",
-        options: [
-          { label:"A", text:"Stabil, solange Leistung und Ordnung da sind.", score:{ funktionierende:0.7, kontrollierende:0.3 } },
-          { label:"B", text:"Schwankend – je nach Außen, Stimmung, Feedback.", score:{ suchende:1 } },
-          { label:"C", text:"Stabil durch Standards; bei Chaos werde ich wachsam.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Ich weiß, was ich kann – und merke trotzdem Erschöpfung.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Stabil, auch ohne Leistung. Ich bleibe in mir.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Wenn Kritik kommt, was passiert zuerst?",
-        options: [
-          { label:"A", text:"Ich nehme es auf und mache weiter.", score:{ funktionierende:0.7, erschoepfte:0.3 } },
-          { label:"B", text:"Ich werde unsicher und suche Bestätigung.", score:{ suchende:1 } },
-          { label:"C", text:"Ich argumentiere, um mich abzusichern.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Es trifft tief, mein System braucht Rückzug.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Ich prüfe ruhig: Was ist wahr, was passt zu mir.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Innere Klarheit: Wie erlebst du sie gerade?",
-        options: [
-          { label:"A", text:"Ich weiß, was zu tun ist – und frage selten nach mir.", score:{ funktionierende:1 } },
-          { label:"B", text:"Ich spüre viel, es bleibt diffus.", score:{ suchende:1 } },
-          { label:"C", text:"Im Kopf klar, im Körper angespannt.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Klarheit ist da, doch das System wirkt voll.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Wenn ich ehrlich hinschaue, wird es klar und einfach.", score:{ reife:1 } }
-        ]
-      },
-      {
-        text: "Freude: Wann kommt sie am ehesten durch?",
-        options: [
-          { label:"A", text:"Wenn alles erledigt ist und ich durchatmen kann.", score:{ funktionierende:1 } },
-          { label:"B", text:"Wenn etwas Neues beginnt und Möglichkeit spürbar ist.", score:{ suchende:1 } },
-          { label:"C", text:"Wenn der Plan aufgeht und Sicherheit entsteht.", score:{ kontrollierende:1 } },
-          { label:"D", text:"Wenn mein Körper weich wird und Ruhe da ist.", score:{ erschoepfte:1 } },
-          { label:"E", text:"Wenn ich ruhig in mir bin und das Leben simpel wird.", score:{ reife:1 } }
-        ]
-      }
+      { text:"Wenn du eine wichtige Entscheidung triffst, was passiert am häufigsten?",
+        options:[
+          {label:"A",text:"Ich entscheide pragmatisch, damit Alltag und Verantwortung stabil bleiben.",score:{funktionierende:1}},
+          {label:"B",text:"Ich sammle Optionen und warte auf innere Klarheit.",score:{suchende:1}},
+          {label:"C",text:"Ich plane Varianten und sichere alles ab.",score:{kontrollierende:1}},
+          {label:"D",text:"Mein System wird schwer, ich brauche erst Ruhe im Körper.",score:{erschoepfte:1}},
+          {label:"E",text:"Ich spüre in mich hinein und entscheide klar – ohne extra Schleifen.",score:{reife:1}}
+        ]},
+      { text:"Wie gehst du im Job oder Business mit Druck um?",
+        options:[
+          {label:"A",text:"Ich funktioniere weiter und halte den Laden am Laufen.",score:{funktionierende:.7,erschoepfte:.3}},
+          {label:"B",text:"Ich verliere Fokus und suche den richtigen nächsten Schritt.",score:{suchende:1}},
+          {label:"C",text:"Ich werde straffer: Plan, Kontrolle, Standards.",score:{kontrollierende:1}},
+          {label:"D",text:"Ich merke Überlastung und werde innerlich langsam.",score:{erschoepfte:1}},
+          {label:"E",text:"Ich stoppe kurz, reguliere, entscheide dann bewusst.",score:{reife:1}}
+        ]},
+      { text:"In Beziehungen: Was trifft am ehesten zu?",
+        options:[
+          {label:"A",text:"Ich bin oft die Stabile und halte viel zusammen.",score:{funktionierende:1}},
+          {label:"B",text:"Ich wünsche mir mehr innere Sicherheit und Richtung.",score:{suchende:1}},
+          {label:"C",text:"Ich brauche Verlässlichkeit – sonst werde ich streng.",score:{kontrollierende:1}},
+          {label:"D",text:"Ich liebe tief, doch mein System braucht mehr Entlastung.",score:{erschoepfte:1}},
+          {label:"E",text:"Ich bin nah und bleibe bei mir, auch wenn es emotional wird.",score:{reife:1}}
+        ]},
+      { text:"Wenn du Grenzen setzen willst, wie läuft es meistens?",
+        options:[
+          {label:"A",text:"Ich schlucke erst, damit es ruhig bleibt, und kläre später.",score:{funktionierende:1}},
+          {label:"B",text:"Ich merke es, ringe innerlich und ärgere mich danach.",score:{suchende:1}},
+          {label:"C",text:"Ich stoppe es sofort und werde sehr klar.",score:{kontrollierende:1}},
+          {label:"D",text:"Ich ziehe mich zurück, weil Ruhe Vorrang bekommt.",score:{erschoepfte:1}},
+          {label:"E",text:"Ich setze ruhig eine klare Grenze und bleibe im Kontakt.",score:{reife:1}}
+        ]},
+      { text:"Wie zeigt sich Aufschieberitis bei dir am ehesten?",
+        options:[
+          {label:"A",text:"Ich erledige schnell, damit Ruhe entsteht.",score:{funktionierende:1}},
+          {label:"B",text:"Ich warte auf Klarheit und verliere mich in Möglichkeiten.",score:{suchende:1}},
+          {label:"C",text:"Ich starte erst, wenn alles kontrollierbar wirkt.",score:{kontrollierende:1}},
+          {label:"D",text:"Energie ist knapp, es wirkt wie ein Berg.",score:{erschoepfte:1}},
+          {label:"E",text:"Ich mache es klein und gehe Schritt für Schritt.",score:{reife:1}}
+        ]},
+      { text:"Perfektion: Was beschreibt dich am besten?",
+        options:[
+          {label:"A",text:"Ordentlich und pragmatisch – Hauptsache es läuft.",score:{funktionierende:1}},
+          {label:"B",text:"Viele Varianten, weil ich das Richtige finden will.",score:{suchende:1}},
+          {label:"C",text:"Schwer loslassen, weil Fehler sich wie Kontrollverlust anfühlen.",score:{kontrollierende:1}},
+          {label:"D",text:"Hoher Anspruch, doch die Batterie ist begrenzt.",score:{erschoepfte:1}},
+          {label:"E",text:"Stimmig reicht – ich gehe dann weiter.",score:{reife:1}}
+        ]},
+      { text:"Wie fühlt sich dein Selbstwert aktuell an?",
+        options:[
+          {label:"A",text:"Stabil, solange Leistung und Ordnung da sind.",score:{funktionierende:.7,kontrollierende:.3}},
+          {label:"B",text:"Schwankend – je nach Außen, Stimmung, Feedback.",score:{suchende:1}},
+          {label:"C",text:"Stabil durch Standards; bei Chaos werde ich wachsam.",score:{kontrollierende:1}},
+          {label:"D",text:"Ich weiß, was ich kann – und merke trotzdem Erschöpfung.",score:{erschoepfte:1}},
+          {label:"E",text:"Stabil, auch ohne Leistung. Ich bleibe in mir.",score:{reife:1}}
+        ]},
+      { text:"Wenn Kritik kommt, was passiert zuerst?",
+        options:[
+          {label:"A",text:"Ich nehme es auf und mache weiter.",score:{funktionierende:.7,erschoepfte:.3}},
+          {label:"B",text:"Ich werde unsicher und suche Bestätigung.",score:{suchende:1}},
+          {label:"C",text:"Ich argumentiere, um mich abzusichern.",score:{kontrollierende:1}},
+          {label:"D",text:"Es trifft tief, mein System braucht Rückzug.",score:{erschoepfte:1}},
+          {label:"E",text:"Ich prüfe ruhig: Was ist wahr, was passt zu mir.",score:{reife:1}}
+        ]},
+      { text:"Innere Klarheit: Wie erlebst du sie gerade?",
+        options:[
+          {label:"A",text:"Ich weiß, was zu tun ist – und frage selten nach mir.",score:{funktionierende:1}},
+          {label:"B",text:"Ich spüre viel, es bleibt diffus.",score:{suchende:1}},
+          {label:"C",text:"Im Kopf klar, im Körper angespannt.",score:{kontrollierende:1}},
+          {label:"D",text:"Klarheit ist da, doch das System wirkt voll.",score:{erschoepfte:1}},
+          {label:"E",text:"Wenn ich ehrlich hinschaue, wird es klar und einfach.",score:{reife:1}}
+        ]},
+      { text:"Freude: Wann kommt sie am ehesten durch?",
+        options:[
+          {label:"A",text:"Wenn alles erledigt ist und ich durchatmen kann.",score:{funktionierende:1}},
+          {label:"B",text:"Wenn etwas Neues beginnt und Möglichkeit spürbar ist.",score:{suchende:1}},
+          {label:"C",text:"Wenn der Plan aufgeht und Sicherheit entsteht.",score:{kontrollierende:1}},
+          {label:"D",text:"Wenn mein Körper weich wird und Ruhe da ist.",score:{erschoepfte:1}},
+          {label:"E",text:"Wenn ich ruhig in mir bin und das Leben simpel wird.",score:{reife:1}}
+        ]}
     ];
 
-    /* ===========================
-       UI HOOKS
-       =========================== */
-    const topbar = document.getElementById("topbar");
-    const progressBar = document.getElementById("progressBar");
-    const qCount = document.getElementById("qCount");
-    const qTag = document.getElementById("qTag");
+    /* =========================
+       DOM
+       ========================= */
+    const topbar=document.getElementById("topbar");
+    const progressBar=document.getElementById("progressBar");
+    const qCount=document.getElementById("qCount");
+    const qTag=document.getElementById("qTag");
 
-    const panelStart = document.getElementById("panelStart");
-    const panelQuiz = document.getElementById("panelQuiz");
-    const panelLead = document.getElementById("panelLead");
-    const panelResult = document.getElementById("panelResult");
+    const panelStart=document.getElementById("panelStart");
+    const panelQuiz=document.getElementById("panelQuiz");
+    const panelLead=document.getElementById("panelLead");
+    const panelResult=document.getElementById("panelResult");
 
-    const startBtn = document.getElementById("startBtn");
-    const restartBtn = document.getElementById("restartBtn");
+    const startBtn=document.getElementById("startBtn");
+    const restartBtn=document.getElementById("restartBtn");
 
-    const questionText = document.getElementById("questionText");
-    const optionsEl = document.getElementById("options");
-    const backBtn = document.getElementById("backBtn");
-    const nextBtn = document.getElementById("nextBtn");
+    const questionText=document.getElementById("questionText");
+    const optionsEl=document.getElementById("options");
+    const backBtn=document.getElementById("backBtn");
+    const nextBtn=document.getElementById("nextBtn");
 
-    const goQuentnBtn = document.getElementById("goQuentnBtn");
-    const skipBtn = document.getElementById("skipBtn");
+    const goQuentnBtn=document.getElementById("goQuentnBtn");
+    const skipBtn=document.getElementById("skipBtn");
 
-    const resultTitle = document.getElementById("resultTitle");
-    const resultShort = document.getElementById("resultShort");
-    const resultStrength = document.getElementById("resultStrength");
-    const resultSignals = document.getElementById("resultSignals");
-    const resultNextStep = document.getElementById("resultNextStep");
-    const resultMeta = document.getElementById("resultMeta");
+    const resultTitle=document.getElementById("resultTitle");
+    const resultShort=document.getElementById("resultShort");
+    const resultStrength=document.getElementById("resultStrength");
+    const resultSignals=document.getElementById("resultSignals");
+    const resultNextStep=document.getElementById("resultNextStep");
+    const resultMeta=document.getElementById("resultMeta");
 
-    const ctaStandort = document.getElementById("ctaStandort");
-    const ctaWebinar = document.getElementById("ctaWebinar");
+    const ctaStandort=document.getElementById("ctaStandort");
+    const ctaWebinar=document.getElementById("ctaWebinar");
+    ctaStandort.href=LINKS.standort;
+    ctaWebinar.href=LINKS.webinar77;
 
-    ctaStandort.href = LINKS.standort;
-    ctaWebinar.href = LINKS.webinar77;
+    ctaStandort.addEventListener("click",()=>track("cta_click",{cta_type:"standort"}));
+    ctaWebinar.addEventListener("click",()=>track("cta_click",{cta_type:"77webinar"}));
 
-    ctaStandort.addEventListener("click", () => track("cta_click", { cta_type:"standort" }));
-    ctaWebinar.addEventListener("click", () => track("cta_click", { cta_type:"77webinar" }));
-
-    /* ===========================
+    /* =========================
        STATE
-       =========================== */
-    const state = {
-      qIndex: 0,
-      answers: Array(QUESTIONS.length).fill(null),
-      scores: { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 },
-      computedProfile: null
+       ========================= */
+    const state={
+      qIndex:0,
+      answers:Array(QUESTIONS.length).fill(null),
+      scores:{funktionierende:0,suchende:0,kontrollierende:0,erschoepfte:0,reife:0},
+      computedProfile:null
     };
 
-    /* ===========================
-       HELPERS
-       =========================== */
     function scrollTopHard(){
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.body.scrollTop=0;
+      document.documentElement.scrollTop=0;
+      window.scrollTo({top:0,left:0,behavior:"auto"});
     }
 
     function showPanel(which){
-      [panelStart, panelQuiz, panelLead, panelResult].forEach(p => p.classList.remove("active"));
+      [panelStart,panelQuiz,panelLead,panelResult].forEach(p=>p.classList.remove("active"));
       if(which==="start") panelStart.classList.add("active");
       if(which==="quiz") panelQuiz.classList.add("active");
       if(which==="lead") panelLead.classList.add("active");
       if(which==="result") panelResult.classList.add("active");
 
-      topbar.style.display = (which==="quiz") ? "flex" : "none";
+      topbar.style.display=(which==="quiz")?"flex":"none";
 
       scrollTopHard();
       requestAnimationFrame(scrollTopHard);
     }
 
     function updateProgress(){
-      const total = QUESTIONS.length;
-      qCount.textContent = `Frage ${state.qIndex+1} von ${total}`;
-      qTag.textContent = `Frage ${state.qIndex+1}`;
-      progressBar.style.width = `${(state.qIndex/total)*100}%`;
+      const total=QUESTIONS.length;
+      qCount.textContent=`Frage ${state.qIndex+1} von ${total}`;
+      qTag.textContent=`Frage ${state.qIndex+1}`;
+      progressBar.style.width=`${(state.qIndex/total)*100}%`;
     }
 
     function recalcScores(){
-      state.scores = { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 };
-      state.answers.forEach((optIndex, qIndex) => {
+      state.scores={funktionierende:0,suchende:0,kontrollierende:0,erschoepfte:0,reife:0};
+      state.answers.forEach((optIndex,qIndex)=>{
         if(optIndex===null) return;
-        const scoring = QUESTIONS[qIndex].options[optIndex].score;
-        for(const k in scoring) state.scores[k] += scoring[k];
+        const scoring=QUESTIONS[qIndex].options[optIndex].score;
+        for(const k in scoring) state.scores[k]+=scoring[k];
       });
     }
 
     function determineProfile(){
-      const entries = Object.entries(state.scores);
-      const max = Math.max(...entries.map(([,v])=>v));
-      const tied = entries.filter(([,v])=>v===max).map(([k])=>k);
+      const entries=Object.entries(state.scores);
+      const max=Math.max(...entries.map(([,v])=>v));
+      const tied=entries.filter(([,v])=>v===max).map(([k])=>k);
       if(tied.length===1) return tied[0];
       for(const p of PRIORITY) if(tied.includes(p)) return p;
-      return tied[0] || "funktionierende";
+      return tied[0]||"funktionierende";
     }
 
     function renderQuestion(){
-      const q = QUESTIONS[state.qIndex];
-      questionText.textContent = q.text;
+      const q=QUESTIONS[state.qIndex];
+      questionText.textContent=q.text;
 
-      optionsEl.innerHTML = "";
-      q.options.forEach((opt, idx) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "opt";
-        b.innerHTML = `<div class="badge">${opt.label}</div><div class="txt">${opt.text}</div>`;
-        b.addEventListener("click", () => answer(idx));
+      optionsEl.innerHTML="";
+      q.options.forEach((opt,idx)=>{
+        const b=document.createElement("button");
+        b.type="button";
+        b.className="opt";
+        b.innerHTML=`<div class="badge">${opt.label}</div><div class="txt">${opt.text}</div>`;
+        b.addEventListener("click",()=>answer(idx));
         optionsEl.appendChild(b);
       });
 
-      backBtn.disabled = (state.qIndex===0);
+      backBtn.disabled=(state.qIndex===0);
       updateProgress();
       scrollTopHard();
     }
 
     function answer(optIndex){
-      state.answers[state.qIndex] = optIndex;
+      state.answers[state.qIndex]=optIndex;
       recalcScores();
 
-      track("quiz_question_answered", {
-        question_index: state.qIndex + 1,
-        selected_option: ["A","B","C","D","E"][optIndex]
+      track("quiz_question_answered",{
+        question_index:state.qIndex+1,
+        selected_option:["A","B","C","D","E"][optIndex]
       });
 
-      if(state.qIndex === QUESTIONS.length - 1){
-        track("quiz_completed", { total_questions: QUESTIONS.length });
-        state.computedProfile = determineProfile();
+      if(state.qIndex===QUESTIONS.length-1){
+        track("quiz_completed",{total_questions:QUESTIONS.length});
+        state.computedProfile=determineProfile();
 
-        // lokal speichern (für Support/Debug)
         try{
-          localStorage.setItem("phoenixQuizComputed", JSON.stringify({
-            profileKey: state.computedProfile,
-            ts: Date.now()
+          localStorage.setItem("phoenixQuizComputed",JSON.stringify({
+            profileKey:state.computedProfile,
+            ts:Date.now()
           }));
         }catch(e){}
 
@@ -873,114 +658,101 @@
     }
 
     function redirectToQuentn(profileKey){
-      // Übergabe an Quentn: Feld muss dort "Vorausfüllen" + "Immer verstecken" haben
+      // Quentn-Feld muss genau so heißen: field_quiz_ergebnisprofil
       const url = `${QUENTN_LANDINGPAGE}?field_quiz_ergebnisprofil=${encodeURIComponent(profileKey)}`;
-      track("lead_form_redirect", { result_profile_key: profileKey });
-      window.location.href = url;
+      track("lead_submitted",{result_profile_key:profileKey});
+      window.location.href=url;
     }
 
     function renderResult(profileKey){
-      const copy = RESULT_COPY[profileKey];
+      const copy=RESULT_COPY[profileKey];
       if(!copy) return;
 
-      resultTitle.textContent = copy.title;
-      resultShort.textContent = copy.short;
+      resultTitle.textContent=copy.title;
+      resultShort.textContent=copy.short;
 
-      resultStrength.innerHTML = "";
-      copy.strength.forEach(t => {
-        const li = document.createElement("li");
-        li.textContent = t;
+      resultStrength.innerHTML="";
+      copy.strength.forEach(t=>{
+        const li=document.createElement("li");
+        li.textContent=t;
         resultStrength.appendChild(li);
       });
 
-      resultSignals.innerHTML = "";
-      copy.signals.forEach(t => {
-        const li = document.createElement("li");
-        li.textContent = t;
+      resultSignals.innerHTML="";
+      copy.signals.forEach(t=>{
+        const li=document.createElement("li");
+        li.textContent=t;
         resultSignals.appendChild(li);
       });
 
-      resultNextStep.textContent = copy.next;
+      resultNextStep.textContent=copy.next;
+      resultMeta.textContent=`Auswertung geladen: ${new Date().toLocaleString("de-DE")}`;
 
-      const ts = new Date();
-      resultMeta.textContent = `Auswertung geladen: ${ts.toLocaleString("de-DE")}`;
-
-      track("result_shown", { result_profile: copy.title });
+      track("result_shown",{result_profile:copy.title});
       showPanel("result");
-      scrollTopHard();
     }
 
-    function resetAll({ clearStorage=false } = {}){
-      state.qIndex = 0;
-      state.answers = Array(QUESTIONS.length).fill(null);
-      state.scores = { funktionierende:0, suchende:0, kontrollierende:0, erschoepfte:0, reife:0 };
-      state.computedProfile = null;
-
-      progressBar.style.width = "0%";
+    function resetAll({clearStorage=false}={}){
+      state.qIndex=0;
+      state.answers=Array(QUESTIONS.length).fill(null);
+      state.scores={funktionierende:0,suchende:0,kontrollierende:0,erschoepfte:0,reife:0};
+      state.computedProfile=null;
+      progressBar.style.width="0%";
 
       if(clearStorage){
-        try{
-          localStorage.removeItem("phoenixQuizComputed");
-        }catch(e){}
+        try{localStorage.removeItem("phoenixQuizComputed");}catch(e){}
       }
       showPanel("start");
     }
 
-    /* ===========================
+    /* =========================
        EVENTS
-       =========================== */
-    startBtn.addEventListener("click", () => {
-      track("quiz_start", { total_questions: QUESTIONS.length });
+       ========================= */
+    startBtn.addEventListener("click",()=>{
+      track("quiz_start",{total_questions:QUESTIONS.length});
       showPanel("quiz");
-      state.qIndex = 0;
+      state.qIndex=0;
       renderQuestion();
     });
 
-    backBtn.addEventListener("click", () => {
+    backBtn.addEventListener("click",()=>{
       if(state.qIndex===0) return;
       state.qIndex--;
       renderQuestion();
     });
 
-    nextBtn.addEventListener("click", () => {
-      const chosen = state.answers[state.qIndex];
-      if(chosen===null){
+    nextBtn.addEventListener("click",()=>{
+      if(state.answers[state.qIndex]===null){
         alert("Bitte wähle eine Antwort.");
-        return;
       }
-      // Navigation-Button bleibt fürs Gefühl; Antwort klickt weiter
     });
 
-    goQuentnBtn.addEventListener("click", () => {
+    goQuentnBtn.addEventListener("click",()=>{
       const profileKey = state.computedProfile || determineProfile() || "funktionierende";
-      track("lead_submitted", { result_profile_key: profileKey }); // Tracking-Hook
       redirectToQuentn(profileKey);
     });
 
-    skipBtn.addEventListener("click", () => {
-      // zurück zum Start (ohne Drama)
-      showPanel("start");
-    });
+    skipBtn.addEventListener("click",()=>showPanel("start"));
 
-    restartBtn.addEventListener("click", () => {
+    restartBtn.addEventListener("click",()=>{
       const clear = confirm("Quiz zurücksetzen und lokale Speicherung löschen?");
-      resetAll({ clearStorage: clear });
+      resetAll({clearStorage:clear});
     });
 
-    /* ===========================
-       INIT: Ergebnis nach DOI via ?r=...
-       Quentn Redirect soll sein:
-       https://namaskaracademy.github.io/Phoenix-Quiz/?r=[field_quiz_ergebnisprofil]
-       =========================== */
+    /* =========================
+       INIT
+       ========================= */
     (function init(){
-      const p = new URLSearchParams(location.search);
-      const r = (p.get("r") || "").trim();
+      // Ergebnis wird nach DOI wieder auf GitHub geöffnet via:
+      // https://namaskaracademy.github.io/Phoenix-Quiz/?r=reife
+      const p=new URLSearchParams(location.search);
+      const r=(p.get("r")||"").trim();
 
       if(r && RESULT_COPY[r]){
         renderResult(r);
         return;
       }
-      resetAll({ clearStorage:false });
+      resetAll({clearStorage:false});
     })();
   </script>
 </body>
